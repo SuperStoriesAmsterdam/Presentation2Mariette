@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Denim City AMS — Board Meeting + Breakfast</title>
+<style>
+  @font-face {
+    font-family: 'Topol';
+    src: url('fonts/Topol-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Apercu Pro';
+    src: url('fonts/Apercu-Pro-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Apercu Pro';
+    src: url('fonts/Apercu-Pro-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Apercu Pro';
+    src: url('fonts/Apercu-Pro-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Apercu Pro';
+    src: url('fonts/Apercu-Pro-Bold-Italic.woff2') format('woff2');
+    font-weight: 700;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Apercu Mono';
+    src: url('fonts/Apercu-Mono.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
+    --sp-5: 48px; --sp-6: 64px; --sp-7: 96px; --sp-8: 128px;
+    --bg: #FFE0DB;
+    --surface: #F5D0CB;
+    --primary: #0000A5;
+    --accent: #FF2B2B;
+    --white: #FFFFFF;
+    --muted: #0000A540;
+    --border: #0000A5;
+    --font-display: 'Topol', sans-serif;
+    --font-body: 'Apercu Pro', sans-serif;
+    --font-mono: 'Apercu Mono', monospace;
+    --type-display: clamp(72px, 10vw, 128px);
+    --type-headline: clamp(36px, 6vw, 80px);
+    --type-h1: clamp(28px, 4vw, 48px);
+    --type-h2: 24px;
+    --type-h3: 18px;
+    --type-intro: 20px;
+    --type-body: 16px;
+    --type-small: 14px;
+    --type-label: 11px;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--primary);
+    font-family: var(--font-body);
+    font-size: var(--type-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── Navigation ── */
+  .site-nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--sp-6);
+    height: 56px;
+  }
+  .site-nav__logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+    color: var(--primary);
+    line-height: 1;
+  }
+  .site-nav__logo .ams {
+    color: var(--accent);
+  }
+  .site-nav__meta {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    padding: var(--sp-8) var(--sp-6) var(--sp-7);
+    border-bottom: 1px solid var(--border);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hero__wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(80px, 14vw, 200px);
+    line-height: 0.85;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-5);
+  }
+  .hero__wordmark .ams {
+    color: var(--accent);
+    font-size: 0.85em;
+    letter-spacing: -0.01em;
+  }
+  .hero__sub {
+    font-family: var(--font-body);
+    font-size: var(--type-intro);
+    line-height: 1.5;
+    max-width: 560px;
+  }
+  .hero__meta {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin-top: var(--sp-4);
+  }
+
+  /* ── Section dividers ── */
+  .divider {
+    background: var(--primary);
+    padding: var(--sp-7) var(--sp-6);
+    border-bottom: 1px solid var(--border);
+  }
+  .divider__label {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: var(--sp-2);
+  }
+  .divider__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--type-headline);
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    color: var(--white);
+  }
+  .divider__title .accent {
+    color: var(--accent);
+  }
+
+  /* ── Grid ── */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .grid--three {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* ── Card (image + text cell) ── */
+  .card {
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+  }
+  .card:nth-child(2n) { border-right: none; }
+  .grid--three .card:nth-child(2n) { border-right: 1px solid var(--border); }
+  .grid--three .card:nth-child(3n) { border-right: none; }
+
+  .card__image {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card__image .placeholder {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-align: center;
+    padding: var(--sp-3);
+  }
+  .card__text {
+    padding: var(--sp-4);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-1);
+  }
+  .card__label {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .card__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--type-h2);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .card__title .accent {
+    color: var(--accent);
+  }
+  .card__desc {
+    font-family: var(--font-body);
+    font-size: var(--type-small);
+    line-height: 1.5;
+    color: var(--primary);
+    margin-top: var(--sp-1);
+  }
+
+  /* ── Wide card (full-width row) ── */
+  .wide {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .wide__image {
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .wide__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wide__image .placeholder {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .wide__text {
+    padding: var(--sp-6) var(--sp-5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--sp-2);
+  }
+  .wide__label {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+  .wide__title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--type-h1);
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+  .wide__title .accent {
+    color: var(--accent);
+  }
+  .wide__desc {
+    font-family: var(--font-body);
+    font-size: var(--type-body);
+    line-height: 1.6;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    padding: var(--sp-7) var(--sp-6);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  .footer__wordmark {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--type-headline);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: var(--sp-4);
+  }
+  .footer__wordmark .ams {
+    color: var(--accent);
+    font-size: 0.85em;
+  }
+  .footer__meta {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .site-nav { padding: 0 var(--sp-3); }
+    .hero { padding: var(--sp-8) var(--sp-3) var(--sp-6); }
+    .grid, .grid--three { grid-template-columns: 1fr; }
+    .card { border-right: none; }
+    .grid--three .card { border-right: none; }
+    .wide { grid-template-columns: 1fr; }
+    .wide__image { border-right: none; border-bottom: 1px solid var(--border); }
+    .divider { padding: var(--sp-6) var(--sp-3); }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Nav ── -->
+<nav class="site-nav">
+  <span class="site-nav__logo">DENIM CITY<span class="ams">AMS</span></span>
+  <span class="site-nav__meta">Board Meeting + Breakfast — 2026</span>
+</nav>
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="hero__wordmark">DENIM<br>CITY<span class="ams">AMS</span></div>
+  <div class="hero__sub">Board Meeting + Breakfast</div>
+  <div class="hero__meta">Presentatie — 2026</div>
+</section>
+
+<!-- ── Welcome ── -->
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/01-welcome.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → Denim City interior</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Welcome</span>
+    <h2 class="wide__title">WELCOME TO DENIM <span class="accent">CITY</span></h2>
+    <p class="wide__desc">Home of the House of Denim Foundation, Jean School & so much more</p>
+  </div>
+</div>
+
+<!-- ── 25th + Adriano ── -->
+<div class="grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/02-leadership-breakfast.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Leadership Breakfast</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Milestone</span>
+      <h3 class="card__title">25TH DENIM LEADERSHIP BREAKFAST</h3>
+      <p class="card__desc">A quarter century of bringing the denim industry together</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/03-adriano-goldschmied.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Adriano Goldschmied</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Tribute</span>
+      <h3 class="card__title">ADRIANO GOLDSCHMIED</h3>
+      <p class="card__desc">A tribute to the godfather of denim</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ REBRANDING ══ -->
+<div class="divider">
+  <span class="divider__label">Rebranding</span>
+  <h2 class="divider__title">DENIM CITY <span class="accent">REBRANDED</span></h2>
+</div>
+
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/04-website-homepage.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → New website homepage</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Rebranding</span>
+    <h2 class="wide__title">NEW HOME PAGE</h2>
+    <p class="wide__desc">Rebranding Denim City — the new website is live</p>
+  </div>
+</div>
+
+<!-- ── Store section ── -->
+<div class="grid--three grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/05-store.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Denim City Store</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Retail</span>
+      <h3 class="card__title">DENIM CITY STORE</h3>
+      <p class="card__desc">New logo, new identity, new energy</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/06-denim-wall.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → 6m denim wall</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Retail</span>
+      <h3 class="card__title">WE SELL JEANS</h3>
+      <p class="card__desc">6 meter denim wall — the full range on display</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/07-fabric-wall.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Fabric wall</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Retail</span>
+      <h3 class="card__title">FABRIC WALL</h3>
+      <p class="card__desc">Touch, feel, understand denim</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Curated + Repair + Collab ── -->
+<div class="grid--three grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/08-local-designers.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Local designers</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Curated</span>
+      <h3 class="card__title">LOCAL DESIGNERS</h3>
+      <p class="card__desc">Florian Regtien, AICHE, Sample030, Jouez les Enfants</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/09-repair-station.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Repair station</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Sustainability</span>
+      <h3 class="card__title">REPAIR & CUSTOMIZATION</h3>
+      <p class="card__desc">Repair for life — Nudie Jeans & KOI</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/10-collab-products.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Collab products</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Products</span>
+      <h3 class="card__title">DENIM CITY <span class="accent">AMS</span> COLLABS</h3>
+      <p class="card__desc">Candle + Denim Haze spray</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Lab + Academy ── -->
+<div class="grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/11-lab.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Denim City Lab</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Innovation</span>
+      <h3 class="card__title">DENIM CITY LAB</h3>
+      <p class="card__desc">New logo, new direction — partnership announcement coming soon</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/12-academy.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Denim City Academy</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Education</span>
+      <h3 class="card__title">DENIM CITY ACADEMY</h3>
+      <p class="card__desc">New logo, new identity — education for the next generation</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Volkskrant ── -->
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/13-volkskrant.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → Volkskrant magazine</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Press</span>
+    <h2 class="wide__title">VOLKSKRANT MAGAZINE</h2>
+    <p class="wide__desc">Feature article</p>
+  </div>
+</div>
+
+<!-- ══ PARTNERSHIPS ══ -->
+<div class="divider">
+  <span class="divider__label">Impact</span>
+  <h2 class="divider__title">PARTNERSHIPS & <span class="accent">PROGRAMS</span></h2>
+</div>
+
+<div class="grid--three grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/14-newtexeco.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Newtexeco</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Research</span>
+      <h3 class="card__title">NEWTEXECO</h3>
+      <p class="card__desc">25 jeans for care & repair research program</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/15-incubator.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Talent Incubator</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Talent</span>
+      <h3 class="card__title">HOUSE OF DENIM TALENT INCUBATOR</h3>
+      <p class="card__desc">Growing the next generation of denim innovators</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/16-pvh.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → PVH Foundation</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Partnership</span>
+      <h3 class="card__title">PVH FOUNDATION SUPPORT</h3>
+      <p class="card__desc">Continued partnership with the PVH Foundation</p>
+    </div>
+  </div>
+</div>
+
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/17-kids-workshop.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → Kids workshop at PVH</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Workshop</span>
+    <h2 class="wide__title">TAKE YOUR KIDS TO WORK</h2>
+    <p class="wide__desc">Workshop at PVH HQ — hands-on denim experience for the next generation</p>
+  </div>
+</div>
+
+<!-- ══ COLLABS ══ -->
+<div class="divider">
+  <span class="divider__label">Collaborations</span>
+  <h2 class="divider__title">COLLABS & <span class="accent">CROSSOVERS</span></h2>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/18-denham-olympics.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Denham x Olympics</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Collaboration</span>
+      <h3 class="card__title">DENHAM x <span class="accent">OLYMPISCHE SPELEN</span></h3>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/19-davido.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Davido</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Culture</span>
+      <h3 class="card__title">DAVIDO</h3>
+      <p class="card__desc">Where denim meets global culture</p>
+    </div>
+  </div>
+</div>
+
+<div class="grid--three grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/20-ij-brouwerij.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → IJ Brouwerij</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Collaboration</span>
+      <h3 class="card__title">IJ BROUWERIJ KIMONO'S</h3>
+      <p class="card__desc">Amsterdam craft meets Amsterdam brew</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/21-denim-days.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Denim Days</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Events</span>
+      <h3 class="card__title">DENIM DAYS x INCUBATORS</h3>
+      <p class="card__desc">Where the industry meets emerging talent</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/22-linnen.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Linnen Beyond Fashion</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Exhibition</span>
+      <h3 class="card__title">LINNEN BEYOND FASHION</h3>
+      <p class="card__desc">Exploring material beyond the runway</p>
+    </div>
+  </div>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/23-see-you-again.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → See You Again</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Exhibition</span>
+      <h3 class="card__title">SEE YOU AGAIN</h3>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/24-rembrandthuis.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Rembrandthuis</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Culture</span>
+      <h3 class="card__title">REMBRANDTHUIS x PIET PARIS & SJOUKJE BIERMA</h3>
+      <p class="card__desc">"Good Looking"</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ JEAN SCHOOL ══ -->
+<div class="divider">
+  <span class="divider__label">Education</span>
+  <h2 class="divider__title">JEAN <span class="accent">SCHOOL</span></h2>
+</div>
+
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/25-jean-school.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → Jean School</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Education</span>
+    <h2 class="wide__title">JEAN SCHOOL UPDATE</h2>
+    <p class="wide__desc">The latest from our education program</p>
+  </div>
+</div>
+
+<div class="grid--three grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/26-masterclasses.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Master classes</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Education</span>
+      <h3 class="card__title">MASTER CLASSES</h3>
+      <p class="card__desc">Officina+39, Lycra, Bossa</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/27-e-designer.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → E-Designer</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Education</span>
+      <h3 class="card__title">E-DESIGNER IN CURRICULUM</h3>
+      <p class="card__desc">Digital design tools in Jean School</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/28-fridaytalks.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Friday Talks</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Talks</span>
+      <h3 class="card__title">FRIDAY TALKS</h3>
+      <p class="card__desc">AICHE, Tony Tonnaer, Kevin Koen en Max (over Japan stage)</p>
+    </div>
+  </div>
+</div>
+
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/29-internships.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → Internships</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Education</span>
+    <h2 class="wide__title">INTERNSHIPS</h2>
+    <p class="wide__desc">Need your help — connecting students with industry placements</p>
+  </div>
+</div>
+
+<!-- ══ GLOBAL ══ -->
+<div class="divider">
+  <span class="divider__label">Global Expansion</span>
+  <h2 class="divider__title">DENIM CITY <span class="accent">WORLDWIDE</span></h2>
+</div>
+
+<div class="grid--three grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/30-sao-paulo.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → São Paulo</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Global</span>
+      <h3 class="card__title">DENIM CITY SÃO PAULO</h3>
+      <p class="card__desc">Jos — Make your own Jeans</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/31-istanbul.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Istanbul</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Global</span>
+      <h3 class="card__title">DENIM CITY IST — NEXT STEPS</h3>
+      <p class="card__desc">What's next for Denim City Turkey</p>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/32-johannesburg.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Johannesburg</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Global</span>
+      <h3 class="card__title">DENIM CITY JBURG</h3>
+      <p class="card__desc">Expanding to South Africa</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── AIcademy ── -->
+<div class="wide">
+  <div class="wide__image">
+    <img src="images/33-aicademy.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → AIcademy</span>
+  </div>
+  <div class="wide__text">
+    <span class="wide__label">Future</span>
+    <h2 class="wide__title">DENIM CITY <span class="accent">AI</span>CADEMY</h2>
+    <p class="wide__desc">Online courses — the future of denim education is digital</p>
+  </div>
+</div>
+
+<!-- ══ IN THE PRESS ══ -->
+<div class="divider">
+  <span class="divider__label">Media</span>
+  <h2 class="divider__title">IN THE <span class="accent">PRESS</span></h2>
+</div>
+
+<div class="grid">
+  <div class="card">
+    <div class="card__image">
+      <img src="images/34-wouter-munnichs.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Artikel Wouter Munnichs</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Press</span>
+      <h3 class="card__title">ARTIKEL WOUTER MUNNICHS</h3>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card__image">
+      <img src="images/35-elle-magazine.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Elle Magazine</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Press</span>
+      <h3 class="card__title">ELLE MAGAZINE</h3>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="footer">
+  <div class="footer__wordmark">DENIM<br>CITY<span class="ams">AMS</span></div>
+  <div class="footer__meta">Board Meeting + Breakfast — 2026</div>
+</footer>
+
+</body>
+</html>
