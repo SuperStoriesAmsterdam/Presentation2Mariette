@@ -843,5 +843,36 @@
   <div class="footer__meta">Board Meeting + Breakfast — 2026</div>
 </footer>
 
+<script>
+(function() {
+  const speed = 0.6; // pixels per frame (~36px/sec)
+  let paused = false;
+
+  // pause on hover/touch, resume on leave
+  document.addEventListener('mouseenter', () => paused = true);
+  document.addEventListener('mouseleave', () => paused = false);
+  document.addEventListener('touchstart', () => paused = true);
+  document.addEventListener('touchend', () => { setTimeout(() => paused = false, 3000); });
+
+  // spacebar toggles pause
+  document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') { e.preventDefault(); paused = !paused; }
+  });
+
+  function scroll() {
+    if (!paused) {
+      window.scrollBy(0, speed);
+      // reset to top when reaching the bottom
+      if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2) {
+        window.scrollTo(0, 0);
+      }
+    }
+    requestAnimationFrame(scroll);
+  }
+
+  // start after 3 seconds
+  setTimeout(() => requestAnimationFrame(scroll), 3000);
+})();
+</script>
 </body>
 </html>
