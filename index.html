@@ -153,28 +153,16 @@
     justify-content: center;
     overflow: hidden;
   }
-  .hero__wordmark {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(80px, 14vw, 200px);
-    line-height: 0.85;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
+  .hero__logo {
+    width: clamp(300px, 55vw, 700px);
+    height: auto;
     margin-bottom: var(--sp-5);
-  }
-  .hero__wordmark .ams {
-    color: var(--accent);
-    font-size: 0.85em;
-    letter-spacing: -0.01em;
-  }
-  .hero__letter {
-    display: inline-block;
     opacity: 0;
-    transform: translateY(60px);
-    animation: letterIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform: translateY(40px) scale(0.95);
+    animation: logoIn 1s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  @keyframes letterIn {
-    to { opacity: 1; transform: translateY(0); }
+  @keyframes logoIn {
+    to { opacity: 1; transform: translateY(0) scale(1); }
   }
   .hero__sub {
     font-family: var(--font-body);
@@ -421,17 +409,9 @@
     justify-content: center;
     gap: var(--sp-5);
   }
-  .footer__wordmark {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--type-headline);
-    line-height: 0.9;
-    letter-spacing: -0.02em;
-    text-transform: uppercase;
-  }
-  .footer__wordmark .ams {
-    color: var(--accent);
-    font-size: 0.85em;
+  .footer__logo {
+    width: clamp(200px, 35vw, 400px);
+    height: auto;
   }
   .footer__meta {
     font-family: var(--font-mono);
@@ -512,13 +492,13 @@
 
 <!-- ── Nav ── -->
 <nav class="site-nav" id="nav">
-  <span class="site-nav__logo">DENIM CITY<span class="ams">AMS</span></span>
+  <img class="site-nav__logo-img" src="images/logo-denimcity.svg" alt="Denim City AMS" height="28">
   <span class="site-nav__meta">Board Meeting + Breakfast — 2026</span>
 </nav>
 
 <!-- ── Hero ── -->
 <section class="hero" id="hero">
-  <div class="hero__wordmark" id="wordmark"></div>
+  <img class="hero__logo" src="images/logo-denimcity.svg" alt="Denim City AMS" id="herologo">
   <div class="hero__sub">Welcome to Denim City — home of the House of Denim Foundation, Jean School & so much more</div>
   <div class="hero__meta">Board Meeting + Breakfast — 2026</div>
 </section>
@@ -978,7 +958,7 @@
 
 <!-- ── Footer ── -->
 <footer class="footer reveal">
-  <div class="footer__wordmark">DENIM<br>CITY<span class="ams">AMS</span></div>
+  <img class="footer__logo" src="images/logo-denimcity.svg" alt="Denim City AMS">
   <div class="footer__meta">Towards a brighter blue</div>
   <div class="footer__share">
     <button class="footer__share-btn" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy link',2000)})">Copy link</button>
@@ -988,28 +968,6 @@
 
 <script>
 (function() {
-  // ── Hero letter animation ──
-  const wordmark = document.getElementById('wordmark');
-  const text = 'DENIM\nCITYAMS';
-  let delay = 0;
-  text.split('').forEach((char, i) => {
-    if (char === '\n') {
-      wordmark.appendChild(document.createElement('br'));
-      return;
-    }
-    const span = document.createElement('span');
-    span.className = 'hero__letter';
-    span.style.animationDelay = (delay * 0.06) + 's';
-    if (text.indexOf('AMS') <= i && i < text.indexOf('AMS') + 3) {
-      // wrap AMS in accent color
-      span.style.color = 'var(--accent)';
-      span.style.fontSize = '0.85em';
-    }
-    span.textContent = char;
-    wordmark.appendChild(span);
-    delay++;
-  });
-
   // ── Scroll reveal ──
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
