@@ -73,6 +73,7 @@
   }
 
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
@@ -80,12 +81,24 @@
     font-family: var(--font-body);
     font-size: var(--type-body);
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* ── Progress bar ── */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    z-index: 200;
+    width: 0%;
+    transition: width 0.1s linear;
   }
 
   /* ── Navigation ── */
   .site-nav {
     position: fixed;
-    top: 0; left: 0; right: 0;
+    top: 3px; left: 0; right: 0;
     z-index: 100;
     background: var(--bg);
     border-bottom: 1px solid var(--border);
@@ -94,7 +107,9 @@
     justify-content: space-between;
     padding: 0 var(--sp-6);
     height: 56px;
+    transition: transform 0.3s ease;
   }
+  .site-nav.hidden { transform: translateY(-100%); }
   .site-nav__logo {
     font-family: var(--font-display);
     font-weight: 700;
@@ -105,9 +120,7 @@
     color: var(--primary);
     line-height: 1;
   }
-  .site-nav__logo .ams {
-    color: var(--accent);
-  }
+  .site-nav__logo .ams { color: var(--accent); }
   .site-nav__meta {
     font-family: var(--font-mono);
     font-size: var(--type-label);
@@ -115,6 +128,20 @@
     letter-spacing: 0.08em;
     color: var(--muted);
   }
+
+  /* ── Reveal animations ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
 
   /* ── Hero ── */
   .hero {
@@ -124,6 +151,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    overflow: hidden;
   }
   .hero__wordmark {
     font-family: var(--font-display);
@@ -139,11 +167,22 @@
     font-size: 0.85em;
     letter-spacing: -0.01em;
   }
+  .hero__letter {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(60px);
+    animation: letterIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes letterIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
   .hero__sub {
     font-family: var(--font-body);
     font-size: var(--type-intro);
     line-height: 1.5;
     max-width: 560px;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
   .hero__meta {
     font-family: var(--font-mono);
@@ -152,6 +191,12 @@
     letter-spacing: 0.08em;
     color: var(--muted);
     margin-top: var(--sp-4);
+    opacity: 0;
+    animation: fadeUp 0.8s 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   /* ── Section dividers ── */
@@ -159,6 +204,7 @@
     background: var(--primary);
     padding: var(--sp-7) var(--sp-6);
     border-bottom: 1px solid var(--border);
+    overflow: hidden;
   }
   .divider__label {
     font-family: var(--font-mono);
@@ -177,9 +223,7 @@
     text-transform: uppercase;
     color: var(--white);
   }
-  .divider__title .accent {
-    color: var(--accent);
-  }
+  .divider__title .accent { color: var(--accent); }
 
   /* ── Grid ── */
   .grid {
@@ -187,17 +231,18 @@
     grid-template-columns: 1fr 1fr;
     border-bottom: 1px solid var(--border);
   }
-  .grid--three {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
+  .grid--three { grid-template-columns: 1fr 1fr 1fr; }
 
-  /* ── Card (image + text cell) ── */
+  /* ── Card ── */
   .card {
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
     display: flex;
     flex-direction: column;
+    transition: background 0.3s ease;
+    cursor: default;
   }
+  .card:hover { background: var(--surface); }
   .card:nth-child(2n) { border-right: none; }
   .grid--three .card:nth-child(2n) { border-right: 1px solid var(--border); }
   .grid--three .card:nth-child(3n) { border-right: none; }
@@ -217,7 +262,9 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  .card:hover .card__image img { transform: scale(1.05); }
   .card__image .placeholder {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -249,9 +296,7 @@
     letter-spacing: -0.01em;
     text-transform: uppercase;
   }
-  .card__title .accent {
-    color: var(--accent);
-  }
+  .card__title .accent { color: var(--accent); }
   .card__desc {
     font-family: var(--font-body);
     font-size: var(--type-small);
@@ -260,7 +305,7 @@
     margin-top: var(--sp-1);
   }
 
-  /* ── Wide card (full-width row) ── */
+  /* ── Wide card ── */
   .wide {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -279,7 +324,9 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  .wide:hover .wide__image img { transform: scale(1.03); }
   .wide__image .placeholder {
     font-family: var(--font-mono);
     font-size: 10px;
@@ -309,13 +356,57 @@
     letter-spacing: -0.01em;
     text-transform: uppercase;
   }
-  .wide__title .accent {
-    color: var(--accent);
-  }
+  .wide__title .accent { color: var(--accent); }
   .wide__desc {
     font-family: var(--font-body);
     font-size: var(--type-body);
     line-height: 1.6;
+  }
+
+  /* ── Stat counter ── */
+  .stat {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    color: var(--accent);
+    display: inline-block;
+  }
+  .stat__unit {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    display: block;
+    margin-top: var(--sp-1);
+  }
+
+  /* ── Webflow screenshot ── */
+  .webflow-embed {
+    border-bottom: 1px solid var(--border);
+  }
+  .webflow-embed__header {
+    padding: var(--sp-4) var(--sp-6);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .webflow-embed__viewport {
+    overflow: hidden;
+    height: 80vh;
+  }
+  .webflow-embed__viewport img {
+    width: 100%;
+    display: block;
+    animation: scrollsite 30s linear infinite;
+  }
+  @keyframes scrollsite {
+    0% { transform: translateY(0); }
+    90% { transform: translateY(-80%); }
+    95% { transform: translateY(-80%); }
+    100% { transform: translateY(0); }
   }
 
   /* ── Footer ── */
@@ -323,6 +414,12 @@
     padding: var(--sp-7) var(--sp-6);
     border-top: 1px solid var(--border);
     text-align: center;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-5);
   }
   .footer__wordmark {
     font-family: var(--font-display);
@@ -331,7 +428,6 @@
     line-height: 0.9;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    margin-bottom: var(--sp-4);
   }
   .footer__wordmark .ams {
     color: var(--accent);
@@ -343,6 +439,27 @@
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--muted);
+  }
+  .footer__share {
+    display: flex;
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+  }
+  .footer__share-btn {
+    font-family: var(--font-mono);
+    font-size: var(--type-label);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: var(--sp-2) var(--sp-4);
+    border: 1px solid var(--primary);
+    background: none;
+    color: var(--primary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .footer__share-btn:hover {
+    background: var(--primary);
+    color: var(--white);
   }
 
   /* ── Responsive ── */
@@ -360,34 +477,24 @@
 </head>
 <body>
 
+<!-- ── Progress bar ── -->
+<div class="progress" id="progress"></div>
+
 <!-- ── Nav ── -->
-<nav class="site-nav">
+<nav class="site-nav" id="nav">
   <span class="site-nav__logo">DENIM CITY<span class="ams">AMS</span></span>
   <span class="site-nav__meta">Board Meeting + Breakfast — 2026</span>
 </nav>
 
 <!-- ── Hero ── -->
-<section class="hero">
-  <div class="hero__wordmark">DENIM<br>CITY<span class="ams">AMS</span></div>
-  <div class="hero__sub">Board Meeting + Breakfast</div>
-  <div class="hero__meta">Presentatie — 2026</div>
+<section class="hero" id="hero">
+  <div class="hero__wordmark" id="wordmark"></div>
+  <div class="hero__sub">Welcome to Denim City — home of the House of Denim Foundation, Jean School & so much more</div>
+  <div class="hero__meta">Board Meeting + Breakfast — 2026</div>
 </section>
 
-<!-- ── Welcome ── -->
-<div class="wide">
-  <div class="wide__image">
-    <img src="images/01-welcome.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="placeholder" style="display:none">Image → Denim City interior</span>
-  </div>
-  <div class="wide__text">
-    <span class="wide__label">Welcome</span>
-    <h2 class="wide__title">WELCOME TO DENIM <span class="accent">CITY</span></h2>
-    <p class="wide__desc">Home of the House of Denim Foundation, Jean School & so much more</p>
-  </div>
-</div>
-
 <!-- ── 25th + Adriano ── -->
-<div class="grid">
+<div class="grid reveal">
   <div class="card">
     <div class="card__image">
       <img src="images/02-leadership-breakfast.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -395,8 +502,8 @@
     </div>
     <div class="card__text">
       <span class="card__label">Milestone</span>
-      <h3 class="card__title">25TH DENIM LEADERSHIP BREAKFAST</h3>
-      <p class="card__desc">A quarter century of bringing the denim industry together</p>
+      <h3 class="card__title"><span class="stat" data-target="25" data-suffix="TH">0</span></h3>
+      <p class="card__desc">Denim Leadership Breakfast — a quarter century of bringing the denim industry together</p>
     </div>
   </div>
   <div class="card">
@@ -413,35 +520,27 @@
 </div>
 
 <!-- ══ REBRANDING ══ -->
-<div class="divider">
+<div class="divider reveal">
   <span class="divider__label">Rebranding</span>
   <h2 class="divider__title">DENIM CITY <span class="accent">REBRANDED</span></h2>
 </div>
 
-<div style="border-bottom: 1px solid var(--border);">
-  <div style="padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between;">
+<div class="webflow-embed reveal">
+  <div class="webflow-embed__header">
     <div>
       <span style="font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">Rebranding</span>
       <h2 style="font-family: var(--font-display); font-weight: 700; font-size: var(--type-h2); line-height: 1.05; letter-spacing: -0.01em; text-transform: uppercase; margin-top: 4px;">NEW HOME PAGE — <span style="color: var(--accent);">LIVE</span></h2>
     </div>
     <span style="font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">denim-city.webflow.io</span>
   </div>
-  <div style="overflow: hidden; height: 80vh;">
-    <img src="images/04-webflow-homepage.jpg" style="width: 100%; display: block; animation: scrollsite 30s linear infinite;" alt="Denim City homepage">
+  <div class="webflow-embed__viewport">
+    <img src="images/04-webflow-homepage.jpg" alt="Denim City homepage">
   </div>
 </div>
-<style>
-  @keyframes scrollsite {
-    0% { transform: translateY(0); }
-    90% { transform: translateY(-80%); }
-    95% { transform: translateY(-80%); }
-    100% { transform: translateY(0); }
-  }
-</style>
 
 <!-- ── Store section ── -->
-<div class="grid--three grid">
-  <div class="card">
+<div class="grid--three grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/05-store.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Denim City Store</span>
@@ -452,7 +551,7 @@
       <p class="card__desc">New logo, new identity, new energy</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/06-denim-wall.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → 6m denim wall</span>
@@ -460,10 +559,10 @@
     <div class="card__text">
       <span class="card__label">Retail</span>
       <h3 class="card__title">WE SELL JEANS</h3>
-      <p class="card__desc">6 meter denim wall — the full range on display</p>
+      <p class="card__desc"><span class="stat" data-target="6" data-suffix="">0</span><span class="stat__unit">meter denim wall</span></p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <div class="card__image">
       <img src="images/07-fabric-wall.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Fabric wall</span>
@@ -477,8 +576,8 @@
 </div>
 
 <!-- ── Curated + Repair + Collab ── -->
-<div class="grid--three grid">
-  <div class="card">
+<div class="grid--three grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/08-local-designers.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Local designers</span>
@@ -489,7 +588,7 @@
       <p class="card__desc">Florian Regtien, AICHE, Sample030, Jouez les Enfants</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/09-repair-station.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Repair station</span>
@@ -500,7 +599,7 @@
       <p class="card__desc">Repair for life — Nudie Jeans & KOI</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <div class="card__image">
       <img src="images/10-collab-products.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Collab products</span>
@@ -514,8 +613,8 @@
 </div>
 
 <!-- ── Lab + Academy ── -->
-<div class="grid">
-  <div class="card">
+<div class="grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/11-lab.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Denim City Lab</span>
@@ -526,7 +625,7 @@
       <p class="card__desc">New logo, new direction — partnership announcement coming soon</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/12-academy.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Denim City Academy</span>
@@ -540,7 +639,7 @@
 </div>
 
 <!-- ── Volkskrant ── -->
-<div class="wide">
+<div class="wide reveal">
   <div class="wide__image">
     <img src="images/13-volkskrant.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
     <span class="placeholder" style="display:none">Image → Volkskrant magazine</span>
@@ -553,13 +652,13 @@
 </div>
 
 <!-- ══ PARTNERSHIPS ══ -->
-<div class="divider">
+<div class="divider reveal">
   <span class="divider__label">Impact</span>
   <h2 class="divider__title">PARTNERSHIPS & <span class="accent">PROGRAMS</span></h2>
 </div>
 
-<div class="grid--three grid">
-  <div class="card">
+<div class="grid--three grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/14-newtexeco.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Newtexeco</span>
@@ -567,10 +666,10 @@
     <div class="card__text">
       <span class="card__label">Research</span>
       <h3 class="card__title">NEWTEXECO</h3>
-      <p class="card__desc">25 jeans for care & repair research program</p>
+      <p class="card__desc"><span class="stat" data-target="25" data-suffix="">0</span><span class="stat__unit">jeans for care & repair research</span></p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/15-incubator.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Talent Incubator</span>
@@ -581,7 +680,7 @@
       <p class="card__desc">Growing the next generation of denim innovators</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <div class="card__image">
       <img src="images/16-pvh.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → PVH Foundation</span>
@@ -594,7 +693,7 @@
   </div>
 </div>
 
-<div class="wide">
+<div class="wide reveal">
   <div class="wide__image">
     <img src="images/17-kids-workshop.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
     <span class="placeholder" style="display:none">Image → Kids workshop at PVH</span>
@@ -607,13 +706,13 @@
 </div>
 
 <!-- ══ COLLABS ══ -->
-<div class="divider">
+<div class="divider reveal">
   <span class="divider__label">Collaborations</span>
   <h2 class="divider__title">COLLABS & <span class="accent">CROSSOVERS</span></h2>
 </div>
 
-<div class="grid">
-  <div class="card">
+<div class="grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/18-denham-olympics.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Denham x Olympics</span>
@@ -623,7 +722,7 @@
       <h3 class="card__title">DENHAM x <span class="accent">OLYMPISCHE SPELEN</span></h3>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/19-davido.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Davido</span>
@@ -636,8 +735,8 @@
   </div>
 </div>
 
-<div class="grid--three grid">
-  <div class="card">
+<div class="grid--three grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/20-ij-brouwerij.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → IJ Brouwerij</span>
@@ -648,7 +747,7 @@
       <p class="card__desc">Amsterdam craft meets Amsterdam brew</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/21-denim-days.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Denim Days</span>
@@ -659,7 +758,7 @@
       <p class="card__desc">Where the industry meets emerging talent</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <div class="card__image">
       <img src="images/22-linnen.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Linnen Beyond Fashion</span>
@@ -672,8 +771,8 @@
   </div>
 </div>
 
-<div class="grid">
-  <div class="card">
+<div class="grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/23-see-you-again.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → See You Again</span>
@@ -683,7 +782,7 @@
       <h3 class="card__title">SEE YOU AGAIN</h3>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/24-rembrandthuis.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Rembrandthuis</span>
@@ -697,12 +796,12 @@
 </div>
 
 <!-- ══ JEAN SCHOOL ══ -->
-<div class="divider">
+<div class="divider reveal">
   <span class="divider__label">Education</span>
   <h2 class="divider__title">JEAN <span class="accent">SCHOOL</span></h2>
 </div>
 
-<div class="wide">
+<div class="wide reveal">
   <div class="wide__image">
     <img src="images/25-jean-school.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
     <span class="placeholder" style="display:none">Image → Jean School</span>
@@ -714,8 +813,8 @@
   </div>
 </div>
 
-<div class="grid--three grid">
-  <div class="card">
+<div class="grid--three grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/26-masterclasses.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Master classes</span>
@@ -726,7 +825,7 @@
       <p class="card__desc">Officina+39, Lycra, Bossa</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/27-e-designer.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → E-Designer</span>
@@ -737,7 +836,7 @@
       <p class="card__desc">Digital design tools in Jean School</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <div class="card__image">
       <img src="images/28-fridaytalks.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Friday Talks</span>
@@ -750,7 +849,7 @@
   </div>
 </div>
 
-<div class="wide">
+<div class="wide reveal">
   <div class="wide__image">
     <img src="images/29-internships.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
     <span class="placeholder" style="display:none">Image → Internships</span>
@@ -763,24 +862,24 @@
 </div>
 
 <!-- ══ GLOBAL ══ -->
-<div class="divider">
+<div class="divider reveal">
   <span class="divider__label">Global Expansion</span>
   <h2 class="divider__title">DENIM CITY <span class="accent">WORLDWIDE</span></h2>
 </div>
 
-<div class="grid--three grid">
-  <div class="card">
+<div class="grid--three grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/30-sao-paulo.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → São Paulo</span>
+      <span class="placeholder" style="display:none">Image → S&atilde;o Paulo</span>
     </div>
     <div class="card__text">
       <span class="card__label">Global</span>
-      <h3 class="card__title">DENIM CITY SÃO PAULO</h3>
+      <h3 class="card__title">DENIM CITY S&Atilde;O PAULO</h3>
       <p class="card__desc">Jos — Make your own Jeans</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/31-istanbul.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Istanbul</span>
@@ -791,7 +890,7 @@
       <p class="card__desc">What's next for Denim City Turkey</p>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-3">
     <div class="card__image">
       <img src="images/32-johannesburg.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Johannesburg</span>
@@ -805,7 +904,7 @@
 </div>
 
 <!-- ── AIcademy ── -->
-<div class="wide">
+<div class="wide reveal">
   <div class="wide__image">
     <img src="images/33-aicademy.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
     <span class="placeholder" style="display:none">Image → AIcademy</span>
@@ -818,13 +917,13 @@
 </div>
 
 <!-- ══ IN THE PRESS ══ -->
-<div class="divider">
+<div class="divider reveal">
   <span class="divider__label">Media</span>
   <h2 class="divider__title">IN THE <span class="accent">PRESS</span></h2>
 </div>
 
-<div class="grid">
-  <div class="card">
+<div class="grid reveal">
+  <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/34-wouter-munnichs.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Artikel Wouter Munnichs</span>
@@ -834,7 +933,7 @@
       <h3 class="card__title">ARTIKEL WOUTER MUNNICHS</h3>
     </div>
   </div>
-  <div class="card">
+  <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/35-elle-magazine.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
       <span class="placeholder" style="display:none">Image → Elle Magazine</span>
@@ -847,40 +946,93 @@
 </div>
 
 <!-- ── Footer ── -->
-<footer class="footer">
+<footer class="footer reveal">
   <div class="footer__wordmark">DENIM<br>CITY<span class="ams">AMS</span></div>
-  <div class="footer__meta">Board Meeting + Breakfast — 2026</div>
+  <div class="footer__meta">Towards a brighter blue</div>
+  <div class="footer__share">
+    <button class="footer__share-btn" onclick="navigator.clipboard.writeText(window.location.href).then(()=>{this.textContent='Copied!';setTimeout(()=>this.textContent='Copy link',2000)})">Copy link</button>
+    <button class="footer__share-btn" onclick="window.open('mailto:?subject=Denim City AMS — Board Update&body=Check out what we have been up to: '+encodeURIComponent(window.location.href))">Share via email</button>
+  </div>
 </footer>
 
 <script>
 (function() {
-  const speed = 0.6; // pixels per frame (~36px/sec)
-  let paused = false;
-
-  // pause on hover/touch, resume on leave
-  document.addEventListener('mouseenter', () => paused = true);
-  document.addEventListener('mouseleave', () => paused = false);
-  document.addEventListener('touchstart', () => paused = true);
-  document.addEventListener('touchend', () => { setTimeout(() => paused = false, 3000); });
-
-  // spacebar toggles pause
-  document.addEventListener('keydown', (e) => {
-    if (e.code === 'Space') { e.preventDefault(); paused = !paused; }
+  // ── Hero letter animation ──
+  const wordmark = document.getElementById('wordmark');
+  const text = 'DENIM\nCITYAMS';
+  let delay = 0;
+  text.split('').forEach((char, i) => {
+    if (char === '\n') {
+      wordmark.appendChild(document.createElement('br'));
+      return;
+    }
+    const span = document.createElement('span');
+    span.className = 'hero__letter';
+    span.style.animationDelay = (delay * 0.06) + 's';
+    if (text.indexOf('AMS') <= i && i < text.indexOf('AMS') + 3) {
+      // wrap AMS in accent color
+      span.style.color = 'var(--accent)';
+      span.style.fontSize = '0.85em';
+    }
+    span.textContent = char;
+    wordmark.appendChild(span);
+    delay++;
   });
 
-  function scroll() {
-    if (!paused) {
-      window.scrollBy(0, speed);
-      // reset to top when reaching the bottom
-      if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight - 2) {
-        window.scrollTo(0, 0);
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
       }
-    }
-    requestAnimationFrame(scroll);
-  }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+  reveals.forEach(el => observer.observe(el));
 
-  // start after 3 seconds
-  setTimeout(() => requestAnimationFrame(scroll), 3000);
+  // ── Stat counters ──
+  const stats = document.querySelectorAll('.stat[data-target]');
+  const statObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = 'true';
+        const target = parseInt(entry.target.dataset.target);
+        const suffix = entry.target.dataset.suffix || '';
+        let current = 0;
+        const step = Math.max(1, Math.floor(target / 30));
+        const timer = setInterval(() => {
+          current += step;
+          if (current >= target) {
+            current = target;
+            clearInterval(timer);
+          }
+          entry.target.textContent = current + suffix;
+        }, 40);
+      }
+    });
+  }, { threshold: 0.5 });
+  stats.forEach(el => statObserver.observe(el));
+
+  // ── Progress bar ──
+  const progress = document.getElementById('progress');
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    const total = document.body.scrollHeight - window.innerHeight;
+    progress.style.width = (scrolled / total * 100) + '%';
+  }, { passive: true });
+
+  // ── Nav hide on scroll down, show on scroll up ──
+  let lastScroll = 0;
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const current = window.scrollY;
+    if (current > lastScroll && current > 200) {
+      nav.classList.add('hidden');
+    } else {
+      nav.classList.remove('hidden');
+    }
+    lastScroll = current;
+  }, { passive: true });
 })();
 </script>
 </body>
