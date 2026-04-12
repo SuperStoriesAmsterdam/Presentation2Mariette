@@ -462,6 +462,36 @@
     color: var(--white);
   }
 
+  /* ── Transcript streaming ── */
+  .transcript {
+    font-family: var(--font-body);
+    font-size: var(--type-small);
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--primary);
+    margin-top: var(--sp-2);
+    min-height: 1.6em;
+    border-left: 2px solid var(--accent);
+    padding-left: var(--sp-2);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .transcript.typing {
+    opacity: 1;
+  }
+  .transcript .cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 2px;
+    vertical-align: text-bottom;
+    animation: blink 0.6s step-end infinite;
+  }
+  @keyframes blink {
+    50% { opacity: 0; }
+  }
+
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .site-nav { padding: 0 var(--sp-3); }
@@ -504,6 +534,7 @@
       <span class="card__label">Milestone</span>
       <h3 class="card__title"><span class="stat" data-target="25" data-suffix="TH">0</span></h3>
       <p class="card__desc">Denim Leadership Breakfast — a quarter century of bringing the denim industry together</p>
+      <p class="transcript" data-text="It seems like yesterday that we organized the first denim breakfast at the house of the mayor of Amsterdam. Today it's the 25th edition. And you are so welcome!"></p>
     </div>
   </div>
   <div class="card">
@@ -1020,6 +1051,33 @@
     const total = document.body.scrollHeight - window.innerHeight;
     progress.style.width = (scrolled / total * 100) + '%';
   }, { passive: true });
+
+  // ── Transcript typewriter ──
+  const transcripts = document.querySelectorAll('.transcript[data-text]');
+  const transcriptObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !entry.target.dataset.typed) {
+        entry.target.dataset.typed = 'true';
+        const text = entry.target.dataset.text;
+        entry.target.classList.add('typing');
+        const cursor = document.createElement('span');
+        cursor.className = 'cursor';
+        entry.target.appendChild(cursor);
+        let i = 0;
+        const type = () => {
+          if (i < text.length) {
+            entry.target.insertBefore(document.createTextNode(text[i]), cursor);
+            i++;
+            setTimeout(type, 30 + Math.random() * 30);
+          } else {
+            setTimeout(() => cursor.remove(), 2000);
+          }
+        };
+        setTimeout(type, 500);
+      }
+    });
+  }, { threshold: 0.5 });
+  transcripts.forEach(el => transcriptObserver.observe(el));
 
   // ── Nav hide on scroll down, show on scroll up ──
   let lastScroll = 0;
