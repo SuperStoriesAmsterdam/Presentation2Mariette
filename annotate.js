@@ -143,10 +143,33 @@
     function detectBlock(el) {
         let current = el;
         while (current && current !== document.body) {
+            // Explicit data-block attribute — highest priority
             if (current.dataset && current.dataset.block) return current.dataset.block;
-            if (current.id) return current.id;
+            if (current.id && current.id !== 'cursorDot' && current.id !== 'cursorRing' && current.id !== 'progress' && current.id !== 'nav') return current.id;
+
+            // Detect by card/section title content
+            const title = current.querySelector && current.querySelector('.card__title, .wide__title, .divider__title, .hero-moment__title');
+            if (title) {
+                const text = title.textContent.trim().substring(0, 50).replace(/\s+/g, ' ');
+                if (text) return text;
+            }
+
+            // Detect by class patterns used in the presentation
             const cls = current.className;
             if (typeof cls === 'string') {
+                if (cls.includes('hero-moment')) {
+                    const t = current.querySelector('.hero-moment__title');
+                    return t ? t.textContent.trim().substring(0, 50) : 'hero-moment';
+                }
+                if (cls.includes('pullquote')) return 'pullquote';
+                if (cls.includes('webflow-embed')) return 'webflow-homepage';
+                if (cls.includes('footer')) return 'footer';
+                if (cls.includes('hero') && !cls.includes('hero-moment')) return 'hero-landing';
+                if (cls.includes('divider')) {
+                    const t = current.querySelector('.divider__title');
+                    return t ? 'section: ' + t.textContent.trim().substring(0, 40) : 'divider';
+                }
+                // Original patterns
                 const match = cls.match(/\b(hero|store|academy|lab|tours|agenda|footer|mission|place|nav|education|collaborate)\b/i);
                 if (match) return match[1].toLowerCase();
             }
