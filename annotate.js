@@ -732,7 +732,10 @@
         panel.innerHTML = `
             <div id="ss-panel-header">
                 <span>Annotations · ${open.length} open</span>
-                <button id="ss-panel-close">✕</button>
+                <div style="display:flex;gap:8px;align-items:center">
+                    <button id="ss-panel-clear" style="font-size:11px;padding:4px 12px;border:1px solid rgba(255,224,219,0.3);border-radius:4px;background:none;color:var(--accent,#FF2B2B);cursor:pointer;font-family:var(--font-mono,'Apercu Mono',monospace);text-transform:uppercase;letter-spacing:0.05em">Clear all</button>
+                    <button id="ss-panel-close">✕</button>
+                </div>
             </div>
             ${renderGroup('@claude', claudeOpen, 'var(--primary, #1200CC)')}
             ${renderGroup('@designer', designerOpen, 'var(--accent, #FF2B2B)')}
@@ -743,6 +746,15 @@
         document.getElementById('ss-panel-close').addEventListener('click', () => {
             panelOpen = false;
             panel.remove();
+        });
+        document.getElementById('ss-panel-clear').addEventListener('click', () => {
+            if (confirm('Clear all annotations? You will start fresh.')) {
+                annotations = [];
+                storage._saveLocal();
+                renderDots();
+                panelOpen = false;
+                panel.remove();
+            }
         });
     }
 
