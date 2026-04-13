@@ -5,505 +5,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Denim City AMS — Board Meeting + Breakfast</title>
 <style>
-  @font-face {
-    font-family: 'Topol';
-    src: url('fonts/Topol-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Apercu Pro';
-    src: url('fonts/Apercu-Pro-Regular.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Apercu Pro';
-    src: url('fonts/Apercu-Pro-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-style: normal;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Apercu Pro';
-    src: url('fonts/Apercu-Pro-Italic.woff2') format('woff2');
-    font-weight: 400;
-    font-style: italic;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Apercu Pro';
-    src: url('fonts/Apercu-Pro-Bold-Italic.woff2') format('woff2');
-    font-weight: 700;
-    font-style: italic;
-    font-display: swap;
-  }
-  @font-face {
-    font-family: 'Apercu Mono';
-    src: url('fonts/Apercu-Mono.woff2') format('woff2');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
+  @font-face { font-family: 'Topol'; src: url('fonts/Topol-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Apercu Pro'; src: url('fonts/Apercu-Pro-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Apercu Pro'; src: url('fonts/Apercu-Pro-Bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+  @font-face { font-family: 'Apercu Pro'; src: url('fonts/Apercu-Pro-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+  @font-face { font-family: 'Apercu Pro'; src: url('fonts/Apercu-Pro-Bold-Italic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+  @font-face { font-family: 'Apercu Mono'; src: url('fonts/Apercu-Mono.woff2') format('woff2'); font-weight: 400; font-display: swap; }
 
   :root {
     --sp-1: 8px; --sp-2: 16px; --sp-3: 24px; --sp-4: 32px;
     --sp-5: 48px; --sp-6: 64px; --sp-7: 96px; --sp-8: 128px;
-    --bg: #FFE0DB;
-    --surface: #F5D0CB;
-    --primary: #0000A5;
-    --accent: #FF2B2B;
-    --white: #FFFFFF;
-    --muted: #0000A540;
-    --border: #0000A5;
-    --font-display: 'Topol', sans-serif;
-    --font-body: 'Apercu Pro', sans-serif;
-    --font-mono: 'Apercu Mono', monospace;
-    --type-display: clamp(72px, 10vw, 128px);
-    --type-headline: clamp(36px, 6vw, 80px);
-    --type-h1: clamp(28px, 4vw, 48px);
-    --type-h2: 24px;
-    --type-h3: 18px;
-    --type-intro: 20px;
-    --type-body: 16px;
-    --type-small: 14px;
-    --type-label: 11px;
+    --bg: #FFE0DB; --surface: #F5D0CB; --primary: #0000A5;
+    --accent: #FF2B2B; --white: #FFFFFF; --muted: #0000A540; --border: #0000A5;
+    --font-display: 'Topol', sans-serif; --font-body: 'Apercu Pro', sans-serif; --font-mono: 'Apercu Mono', monospace;
+    --type-headline: clamp(36px, 6vw, 80px); --type-h1: clamp(28px, 4vw, 48px);
+    --type-h2: 24px; --type-h3: 18px; --type-intro: 20px;
+    --type-body: 16px; --type-small: 14px; --type-label: 11px;
   }
-
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--primary); font-family: var(--font-body); font-size: var(--type-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
+  a, button { cursor: none; }
 
-  body {
-    background: var(--bg);
-    color: var(--primary);
-    font-family: var(--font-body);
-    font-size: var(--type-body);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+  /* ── Cursor trail ── */
+  .cursor-dot { position: fixed; width: 8px; height: 8px; background: var(--primary); border-radius: 50%; pointer-events: none; z-index: 9998; transition: transform 0.1s; mix-blend-mode: multiply; }
+  .cursor-ring { position: fixed; width: 36px; height: 36px; border: 2px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9997; transition: transform 0.15s ease-out, width 0.2s, height 0.2s, border-color 0.2s; transform: translate(-50%, -50%); }
+  .cursor-ring.hovering { width: 52px; height: 52px; border-color: var(--primary); }
 
   /* ── Progress bar ── */
-  .progress {
-    position: fixed;
-    top: 0; left: 0;
-    height: 3px;
-    background: var(--accent);
-    z-index: 200;
-    width: 0%;
-    transition: width 0.1s linear;
-  }
+  .progress { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); z-index: 200; width: 0%; transition: width 0.1s linear; }
 
   /* ── Navigation ── */
-  .site-nav {
-    position: fixed;
-    top: 3px; left: 0; right: 0;
-    z-index: 100;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 var(--sp-6);
-    height: 56px;
-    transition: transform 0.3s ease;
-  }
+  .site-nav { position: fixed; top: 3px; left: 0; right: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 var(--sp-6); height: 56px; transition: transform 0.3s ease; }
   .site-nav.hidden { transform: translateY(-100%); }
-  .site-nav__logo {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 16px;
-    text-transform: uppercase;
-    letter-spacing: -0.02em;
-    text-decoration: none;
-    color: var(--primary);
-    line-height: 1;
-  }
-  .site-nav__logo .ams { color: var(--accent); }
-  .site-nav__meta {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
+  .site-nav__meta { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
 
-  /* ── Reveal animations ── */
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  .reveal-delay-1 { transition-delay: 0.1s; }
-  .reveal-delay-2 { transition-delay: 0.2s; }
-  .reveal-delay-3 { transition-delay: 0.3s; }
+  /* ── Reveal ── */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; } .reveal-delay-2 { transition-delay: 0.2s; } .reveal-delay-3 { transition-delay: 0.3s; }
 
-  /* ── Hero ── */
-  .hero {
-    padding: var(--sp-8) var(--sp-6) var(--sp-7);
-    border-bottom: 1px solid var(--border);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    overflow: hidden;
-  }
-  .hero__logo {
-    width: clamp(300px, 55vw, 700px);
-    height: auto;
-    margin-bottom: var(--sp-5);
-    opacity: 0;
-    transform: translateY(40px) scale(0.95);
-    animation: logoIn 1s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  @keyframes logoIn {
-    to { opacity: 1; transform: translateY(0) scale(1); }
-  }
-  .hero__sub {
-    font-family: var(--font-body);
-    font-size: var(--type-intro);
-    line-height: 1.5;
-    max-width: 560px;
-    opacity: 0;
-    animation: fadeUp 0.8s 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  .hero__meta {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin-top: var(--sp-4);
-    opacity: 0;
-    animation: fadeUp 0.8s 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  /* ── Full-bleed hero moment ── */
+  .hero-moment { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .hero-moment__bg { position: absolute; inset: 0; z-index: 0; }
+  .hero-moment__bg img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 20s ease-in-out infinite alternate; }
+  .hero-moment__overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%); z-index: 1; }
+  .hero-moment__content { position: relative; z-index: 2; color: var(--white); padding: var(--sp-7) var(--sp-6); max-width: 900px; }
+  .hero-moment__label { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); margin-bottom: var(--sp-2); }
+  .hero-moment__title { font-family: var(--font-display); font-weight: 700; font-size: var(--type-headline); line-height: 0.9; text-transform: uppercase; margin-bottom: var(--sp-3); }
+  .hero-moment__title .accent { color: var(--accent); }
+  .hero-moment__desc { font-family: var(--font-body); font-size: var(--type-intro); line-height: 1.5; max-width: 600px; color: rgba(255,255,255,0.85); }
+  .hero-moment__quote { font-family: var(--font-body); font-style: italic; font-size: var(--type-intro); line-height: 1.6; max-width: 600px; color: rgba(255,255,255,0.9); margin-top: var(--sp-3); border-left: 3px solid var(--accent); padding-left: var(--sp-3); }
 
-  /* ── Section dividers ── */
-  .divider {
-    background: var(--primary);
-    padding: var(--sp-7) var(--sp-6);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-  }
-  .divider__label {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: var(--sp-2);
-  }
-  .divider__title {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--type-headline);
-    line-height: 0.9;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-    color: var(--white);
-  }
+  /* ── Ken Burns ── */
+  @keyframes kenburns { 0% { transform: scale(1) translate(0,0); } 100% { transform: scale(1.08) translate(-1%,-1%); } }
+  @keyframes kenburns2 { 0% { transform: scale(1.05) translate(-1%,0); } 100% { transform: scale(1) translate(1%,-1%); } }
+  @keyframes kenburns3 { 0% { transform: scale(1) translate(1%,1%); } 100% { transform: scale(1.1) translate(-1%,0); } }
+
+  /* ── Hero (landing) ── */
+  .hero { padding: var(--sp-8) var(--sp-6) var(--sp-7); border-bottom: 1px solid var(--border); min-height: 100vh; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+  .hero__logo { width: clamp(300px,55vw,700px); height: auto; margin-bottom: var(--sp-5); opacity: 0; transform: translateY(40px) scale(0.95); animation: logoIn 1s 0.3s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes logoIn { to { opacity: 1; transform: translateY(0) scale(1); } }
+  .hero__sub { font-family: var(--font-body); font-size: var(--type-intro); line-height: 1.5; max-width: 560px; opacity: 0; animation: fadeUp 0.8s 1.2s cubic-bezier(0.16,1,0.3,1) forwards; }
+  .hero__meta { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-top: var(--sp-4); opacity: 0; animation: fadeUp 0.8s 1.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ── Dividers ── */
+  .divider { background: var(--primary); padding: var(--sp-7) var(--sp-6); border-bottom: 1px solid var(--border); overflow: hidden; }
+  .divider__label { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.4); margin-bottom: var(--sp-2); }
+  .divider__title { font-family: var(--font-display); font-weight: 700; font-size: var(--type-headline); line-height: 0.9; letter-spacing: -0.01em; text-transform: uppercase; color: var(--white); }
   .divider__title .accent { color: var(--accent); }
 
-  /* ── Grid ── */
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--border);
-  }
+  /* ── Grid + Cards ── */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
   .grid--three { grid-template-columns: 1fr 1fr 1fr; }
-
-  /* ── Card ── */
-  .card {
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    transition: background 0.3s ease;
-    cursor: default;
-  }
+  .card { border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; transition: background 0.3s; }
   .card:hover { background: var(--surface); }
   .card:nth-child(2n) { border-right: none; }
   .grid--three .card:nth-child(2n) { border-right: 1px solid var(--border); }
   .grid--three .card:nth-child(3n) { border-right: none; }
-
-  .card__image {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    background: var(--surface);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 1px solid var(--border);
-  }
-  .card__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .card:hover .card__image img { transform: scale(1.05); }
-  .card__image .placeholder {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    text-align: center;
-    padding: var(--sp-3);
-  }
-  .card__text {
-    padding: var(--sp-4);
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-1);
-  }
-  .card__label {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .card__title {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--type-h2);
-    line-height: 1.05;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-  }
+  .card__image { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); position: relative; }
+  .card__image img { width: 100%; height: 100%; object-fit: cover; display: block; animation: kenburns 20s ease-in-out infinite alternate; }
+  .card:nth-child(2n) .card__image img { animation-name: kenburns2; }
+  .card:nth-child(3n) .card__image img { animation-name: kenburns3; }
+  .card:hover .card__image img { animation-play-state: paused; transform: scale(1.05); transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+  .card__image .placeholder { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); text-align: center; padding: var(--sp-3); }
+  .card__text { padding: var(--sp-4); flex: 1; display: flex; flex-direction: column; gap: var(--sp-1); }
+  .card__label { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .card__title { font-family: var(--font-display); font-weight: 700; font-size: var(--type-h2); line-height: 1.05; letter-spacing: -0.01em; text-transform: uppercase; }
   .card__title .accent { color: var(--accent); }
-  .card__desc {
-    font-family: var(--font-body);
-    font-size: var(--type-small);
-    line-height: 1.5;
-    color: var(--primary);
-    margin-top: var(--sp-1);
-  }
+  .card__desc { font-family: var(--font-body); font-size: var(--type-small); line-height: 1.5; color: var(--primary); margin-top: var(--sp-1); }
+
+  /* ── Carousel ── */
+  .carousel { position: relative; width: 100%; aspect-ratio: 16/10; overflow: hidden; background: var(--surface); border-bottom: 1px solid var(--border); }
+  .carousel img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 1s ease; animation: kenburns 20s ease-in-out infinite alternate; }
+  .carousel img.active { opacity: 1; }
+  .carousel__dots { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); display: flex; gap: 6px; z-index: 5; }
+  .carousel__dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.6); transition: background 0.3s; }
+  .carousel__dot.active { background: var(--white); }
 
   /* ── Wide card ── */
-  .wide {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-bottom: 1px solid var(--border);
-  }
-  .wide__image {
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .wide__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .wide:hover .wide__image img { transform: scale(1.03); }
-  .wide__image .placeholder {
-    font-family: var(--font-mono);
-    font-size: 10px;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .wide__text {
-    padding: var(--sp-6) var(--sp-5);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: var(--sp-2);
-  }
-  .wide__label {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .wide__title {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: var(--type-h1);
-    line-height: 1.0;
-    letter-spacing: -0.01em;
-    text-transform: uppercase;
-  }
+  .wide { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
+  .wide__image { aspect-ratio: 16/9; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .wide__image img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 20s ease-in-out infinite alternate; }
+  .wide:hover .wide__image img { animation-play-state: paused; }
+  .wide__image .placeholder { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .wide__text { padding: var(--sp-6) var(--sp-5); display: flex; flex-direction: column; justify-content: center; gap: var(--sp-2); }
+  .wide__label { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .wide__title { font-family: var(--font-display); font-weight: 700; font-size: var(--type-h1); line-height: 1.0; letter-spacing: -0.01em; text-transform: uppercase; }
   .wide__title .accent { color: var(--accent); }
-  .wide__desc {
-    font-family: var(--font-body);
-    font-size: var(--type-body);
-    line-height: 1.6;
-  }
+  .wide__desc { font-family: var(--font-body); font-size: var(--type-body); line-height: 1.6; }
 
-  /* ── Stat counter ── */
-  .stat {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(48px, 7vw, 96px);
-    line-height: 1;
-    color: var(--accent);
-    display: inline-block;
-  }
-  .stat__unit {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    display: block;
-    margin-top: var(--sp-1);
-  }
+  /* ── Stat ── */
+  .stat { font-family: var(--font-display); font-weight: 700; font-size: clamp(48px,7vw,96px); line-height: 1; color: var(--accent); }
+  .stat__unit { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); display: block; margin-top: var(--sp-1); }
 
-  /* ── Webflow screenshot ── */
-  .webflow-embed {
-    border-bottom: 1px solid var(--border);
-  }
-  .webflow-embed__header {
-    padding: var(--sp-4) var(--sp-6);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .webflow-embed__viewport {
-    overflow: hidden;
-    height: 80vh;
-  }
-  .webflow-embed__viewport img {
-    width: 100%;
-    display: block;
-    animation: scrollsite 30s linear infinite;
-  }
-  @keyframes scrollsite {
-    0% { transform: translateY(0); }
-    90% { transform: translateY(-80%); }
-    95% { transform: translateY(-80%); }
-    100% { transform: translateY(0); }
-  }
+  /* ── Webflow embed ── */
+  .webflow-embed { border-bottom: 1px solid var(--border); }
+  .webflow-embed__header { padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .webflow-embed__viewport { overflow: hidden; height: 80vh; }
+  .webflow-embed__viewport img { width: 100%; display: block; animation: scrollsite 30s linear infinite; }
+  @keyframes scrollsite { 0% { transform: translateY(0); } 90% { transform: translateY(-80%); } 95% { transform: translateY(-80%); } 100% { transform: translateY(0); } }
+
+  /* ── Transcript ── */
+  .transcript { font-family: var(--font-body); font-size: var(--type-small); font-style: italic; line-height: 1.6; color: var(--primary); margin-top: var(--sp-2); min-height: 1.6em; border-left: 2px solid var(--accent); padding-left: var(--sp-2); opacity: 0; transition: opacity 0.3s; }
+  .transcript.typing { opacity: 1; }
+  .transcript .cursor { display: inline-block; width: 2px; height: 1em; background: var(--accent); margin-left: 2px; vertical-align: text-bottom; animation: blink 0.6s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ── Pull quote ── */
+  .pullquote { padding: var(--sp-7) var(--sp-6); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; min-height: 50vh; }
+  .pullquote__text { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px,4vw,56px); line-height: 1.05; text-transform: uppercase; text-align: center; max-width: 900px; }
+  .pullquote__text .accent { color: var(--accent); }
 
   /* ── Footer ── */
-  .footer {
-    padding: var(--sp-7) var(--sp-6);
-    border-top: 1px solid var(--border);
-    text-align: center;
-    min-height: 60vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--sp-5);
-  }
-  .footer__logo {
-    width: clamp(200px, 35vw, 400px);
-    height: auto;
-  }
-  .footer__meta {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-  }
-  .footer__share {
-    display: flex;
-    gap: var(--sp-3);
-    margin-top: var(--sp-3);
-  }
-  .footer__share-btn {
-    font-family: var(--font-mono);
-    font-size: var(--type-label);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: var(--sp-2) var(--sp-4);
-    border: 1px solid var(--primary);
-    background: none;
-    color: var(--primary);
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .footer__share-btn:hover {
-    background: var(--primary);
-    color: var(--white);
-  }
-
-  /* ── Transcript streaming ── */
-  .transcript {
-    font-family: var(--font-body);
-    font-size: var(--type-small);
-    font-style: italic;
-    line-height: 1.6;
-    color: var(--primary);
-    margin-top: var(--sp-2);
-    min-height: 1.6em;
-    border-left: 2px solid var(--accent);
-    padding-left: var(--sp-2);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .transcript.typing {
-    opacity: 1;
-  }
-  .transcript .cursor {
-    display: inline-block;
-    width: 2px;
-    height: 1em;
-    background: var(--accent);
-    margin-left: 2px;
-    vertical-align: text-bottom;
-    animation: blink 0.6s step-end infinite;
-  }
-  @keyframes blink {
-    50% { opacity: 0; }
-  }
+  .footer { padding: var(--sp-7) var(--sp-6); border-top: 1px solid var(--border); text-align: center; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-5); }
+  .footer__logo { width: clamp(200px,35vw,400px); height: auto; }
+  .footer__meta { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+  .footer__share { display: flex; gap: var(--sp-3); margin-top: var(--sp-3); }
+  .footer__share-btn { font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; padding: var(--sp-2) var(--sp-4); border: 1px solid var(--primary); background: none; color: var(--primary); transition: all 0.2s; }
+  .footer__share-btn:hover { background: var(--primary); color: var(--white); }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor-dot, .cursor-ring { display: none; }
     .site-nav { padding: 0 var(--sp-3); }
     .hero { padding: var(--sp-8) var(--sp-3) var(--sp-6); }
     .grid, .grid--three { grid-template-columns: 1fr; }
-    .card { border-right: none; }
-    .grid--three .card { border-right: none; }
+    .card { border-right: none; } .grid--three .card { border-right: none; }
     .wide { grid-template-columns: 1fr; }
     .wide__image { border-right: none; border-bottom: 1px solid var(--border); }
     .divider { padding: var(--sp-6) var(--sp-3); }
+    .hero-moment__content { padding: var(--sp-5) var(--sp-3); }
   }
 </style>
 </head>
 <body>
 
-<!-- ── Progress bar ── -->
+<!-- Cursor -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Progress -->
 <div class="progress" id="progress"></div>
 
-<!-- ── Nav ── -->
+<!-- Nav -->
 <nav class="site-nav" id="nav">
-  <img class="site-nav__logo-img" src="images/logo-denimcity.svg" alt="Denim City AMS" height="28">
+  <img src="images/logo-denimcity.svg" alt="Denim City AMS" height="28">
   <span class="site-nav__meta">Board Meeting + Breakfast — 2026</span>
 </nav>
 
-<!-- ── Hero ── -->
-<section class="hero" id="hero">
-  <img class="hero__logo" src="images/logo-denimcity.svg" alt="Denim City AMS" id="herologo">
+<!-- ── HERO ── -->
+<section class="hero">
+  <img class="hero__logo" src="images/logo-denimcity.svg" alt="Denim City AMS">
   <div class="hero__sub">Welcome to Denim City — home of the House of Denim Foundation, Jean School & so much more</div>
   <div class="hero__meta">Board Meeting + Breakfast — 2026</div>
 </section>
 
-<!-- ── 25th + Adriano ── -->
+<!-- ── 25th + Adriano (full-bleed) ── -->
 <div class="grid reveal">
   <div class="card">
     <div class="card__image">
@@ -513,7 +193,7 @@
     <div class="card__text">
       <span class="card__label">Milestone</span>
       <h3 class="card__title"><span class="stat" data-target="25" data-suffix="TH">0</span></h3>
-      <p class="card__desc">Denim Leadership Breakfast — a quarter century of bringing the denim industry together</p>
+      <p class="card__desc">Edition Denim Leadership Breakfast</p>
       <p class="transcript" data-text="It seems like yesterday that we organized the first denim breakfast at the house of the mayor of Amsterdam. Today it's the 25th edition. And you are so welcome!"></p>
     </div>
   </div>
@@ -539,17 +219,17 @@
 <div class="webflow-embed reveal">
   <div class="webflow-embed__header">
     <div>
-      <span style="font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">Rebranding</span>
-      <h2 style="font-family: var(--font-display); font-weight: 700; font-size: var(--type-h2); line-height: 1.05; letter-spacing: -0.01em; text-transform: uppercase; margin-top: 4px;">NEW HOME PAGE — <span style="color: var(--accent);">LIVE</span></h2>
+      <span style="font-family:var(--font-mono);font-size:var(--type-label);text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">Rebranding</span>
+      <h2 style="font-family:var(--font-display);font-weight:700;font-size:var(--type-h2);line-height:1.05;letter-spacing:-0.01em;text-transform:uppercase;margin-top:4px">NEW HOME PAGE — <span style="color:var(--accent)">LIVE</span></h2>
     </div>
-    <span style="font-family: var(--font-mono); font-size: var(--type-label); text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);">denim-city.webflow.io</span>
+    <span style="font-family:var(--font-mono);font-size:var(--type-label);text-transform:uppercase;letter-spacing:0.08em;color:var(--muted)">denim-city.webflow.io</span>
   </div>
   <div class="webflow-embed__viewport">
     <img src="images/04-webflow-homepage.jpg" alt="Denim City homepage">
   </div>
 </div>
 
-<!-- ── Store section ── -->
+<!-- ── Store ── -->
 <div class="grid--three grid reveal">
   <div class="card reveal reveal-delay-1">
     <div class="card__image">
@@ -559,7 +239,6 @@
     <div class="card__text">
       <span class="card__label">Retail</span>
       <h3 class="card__title">DENIM CITY STORE</h3>
-      <p class="card__desc">New logo, new identity, new energy</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
@@ -571,6 +250,7 @@
       <span class="card__label">Retail</span>
       <h3 class="card__title">WE SELL JEANS</h3>
       <p class="card__desc"><span class="stat" data-target="6" data-suffix="">0</span><span class="stat__unit">meter denim wall</span></p>
+      <p class="card__desc">Nudie Jeans, Edwin Japan, Benzak Denim Developers, Naked & Famous, Denham, Kuyichi, Slow Made, Kings of Indigo, AICHE</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-3">
@@ -596,7 +276,7 @@
     <div class="card__text">
       <span class="card__label">Curated</span>
       <h3 class="card__title">LOCAL DESIGNERS</h3>
-      <p class="card__desc">Florian Regtien, AICHE, Sample030, Jouez les Enfants</p>
+      <p class="card__desc">Florian Regtien, AICHE, Sample030, Jouez les Enfants, Peter Wertmann</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
@@ -608,6 +288,7 @@
       <span class="card__label">Sustainability</span>
       <h3 class="card__title">REPAIR & CUSTOMIZATION</h3>
       <p class="card__desc">Repair for life — Nudie Jeans & KOI</p>
+      <p class="card__desc"><span class="stat" data-target="365" data-suffix="">0</span><span class="stat__unit">repairs per year</span></p>
     </div>
   </div>
   <div class="card reveal reveal-delay-3">
@@ -618,7 +299,7 @@
     <div class="card__text">
       <span class="card__label">Products</span>
       <h3 class="card__title">DENIM CITY <span class="accent">AMS</span> COLLABS</h3>
-      <p class="card__desc">Candle + Denim Haze spray</p>
+      <p class="card__desc">Candle + Denim Haze spray — Denim City AMS x Very Goods Studio & Mood M</p>
     </div>
   </div>
 </div>
@@ -633,7 +314,7 @@
     <div class="card__text">
       <span class="card__label">Innovation</span>
       <h3 class="card__title">DENIM CITY LAB</h3>
-      <p class="card__desc">New logo, new direction — partnership announcement coming soon</p>
+      <p class="card__desc">Laundry workshop: customize, upcycle, distress, mend, repair your own denim — washing treatments with laser, ozone, ecotone, natural dyeing under the guidance of our master tailor & wash master</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
@@ -678,6 +359,7 @@
       <span class="card__label">Research</span>
       <h3 class="card__title">NEWTEXECO</h3>
       <p class="card__desc"><span class="stat" data-target="25" data-suffix="">0</span><span class="stat__unit">jeans for care & repair research</span></p>
+      <p class="card__desc">25 people make 25 jeans out of PCR selvedge denim and wear them for 2 years, sharing their experience over time</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
@@ -699,7 +381,6 @@
     <div class="card__text">
       <span class="card__label">Partnership</span>
       <h3 class="card__title">PVH FOUNDATION SUPPORT</h3>
-      <p class="card__desc">Continued partnership with the PVH Foundation</p>
     </div>
   </div>
 </div>
@@ -707,12 +388,12 @@
 <div class="wide reveal">
   <div class="wide__image">
     <img src="images/17-kids-workshop.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="placeholder" style="display:none">Image → Kids workshop at PVH</span>
+    <span class="placeholder" style="display:none">Image → Working Families at PVH</span>
   </div>
   <div class="wide__text">
     <span class="wide__label">Workshop</span>
-    <h2 class="wide__title">TAKE YOUR KIDS TO WORK</h2>
-    <p class="wide__desc">Workshop at PVH HQ — hands-on denim experience for the next generation</p>
+    <h2 class="wide__title">WORKING FAMILIES</h2>
+    <p class="wide__desc">Customize your own courier bag with patches, laser, studs and beats — at PVH HQ</p>
   </div>
 </div>
 
@@ -722,27 +403,33 @@
   <h2 class="divider__title">COLLABS & <span class="accent">CROSSOVERS</span></h2>
 </div>
 
-<div class="grid reveal">
-  <div class="card reveal reveal-delay-1">
-    <div class="card__image">
-      <img src="images/18-denham-olympics.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → Denham x Olympics</span>
-    </div>
-    <div class="card__text">
-      <span class="card__label">Collaboration</span>
-      <h3 class="card__title">DENHAM x <span class="accent">OLYMPISCHE SPELEN</span></h3>
+<!-- Denham — FULL BLEED HERO -->
+<div class="hero-moment reveal">
+  <div class="hero-moment__bg">
+    <div class="carousel" id="carousel-denham">
+      <img src="images/18-denham-olympics.jpg" class="active" alt="Denham x Olympics 1">
+      <img src="images/18-denham-image2.jpg" alt="Denham x Olympics 2" onerror="this.remove()">
     </div>
   </div>
-  <div class="card reveal reveal-delay-2">
-    <div class="card__image">
-      <img src="images/19-davido.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → Davido</span>
-    </div>
-    <div class="card__text">
-      <span class="card__label">Culture</span>
-      <h3 class="card__title">DAVIDO</h3>
-      <p class="card__desc">Where denim meets global culture</p>
-    </div>
+  <div class="hero-moment__overlay"></div>
+  <div class="hero-moment__content reveal">
+    <span class="hero-moment__label">Collaboration</span>
+    <h2 class="hero-moment__title">DENHAM x <span class="accent">WINTER OLYMPICS</span></h2>
+    <p class="hero-moment__desc">When talent meets legends. We are super proud to be part of the collaboration with Denham and Team NL for the Olympic winter games — and we nailed it.</p>
+  </div>
+</div>
+
+<!-- Davido — FULL BLEED HERO -->
+<div class="hero-moment reveal">
+  <div class="hero-moment__bg">
+    <img src="images/19-davido.jpg" alt="Davido" style="animation-name:kenburns2">
+  </div>
+  <div class="hero-moment__overlay"></div>
+  <div class="hero-moment__content reveal">
+    <span class="hero-moment__label">Culture</span>
+    <h2 class="hero-moment__title">DAVIDO</h2>
+    <p class="hero-moment__desc">Custom made TNO denim for artist Davido designed by Bram Romkes, Jean School graduate, lasered with a "northern light wash" by our washmaster Bowie.</p>
+    <p style="font-family:var(--font-mono);font-size:var(--type-label);text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.5);margin-top:var(--sp-2)"><span class="stat" data-target="31" data-suffix=".5" style="font-size:clamp(36px,5vw,64px);color:var(--white)">0</span><span class="stat__unit" style="color:rgba(255,255,255,0.5)">million followers</span></p>
   </div>
 </div>
 
@@ -755,7 +442,7 @@
     <div class="card__text">
       <span class="card__label">Collaboration</span>
       <h3 class="card__title">IJ BROUWERIJ KIMONO'S</h3>
-      <p class="card__desc">Amsterdam craft meets Amsterdam brew</p>
+      <p class="card__desc">Custom made kimono's with unique details designed by our House of Denim incubator talents</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
@@ -766,7 +453,7 @@
     <div class="card__text">
       <span class="card__label">Events</span>
       <h3 class="card__title">DENIM DAYS x INCUBATORS</h3>
-      <p class="card__desc">Where the industry meets emerging talent</p>
+      <p class="card__desc">Teach them young — your own booth, your own design, your own sales. Turning talent into denim business.</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-3">
@@ -777,7 +464,7 @@
     <div class="card__text">
       <span class="card__label">Exhibition</span>
       <h3 class="card__title">LINNEN BEYOND FASHION</h3>
-      <p class="card__desc">Exploring material beyond the runway</p>
+      <p class="card__desc">The Flax Worker: with Florian Regtien (Jean School graduate) & Trinity Williams (incubator talent) — presented at Nieuwe Instituut Rotterdam</p>
     </div>
   </div>
 </div>
@@ -791,6 +478,7 @@
     <div class="card__text">
       <span class="card__label">Exhibition</span>
       <h3 class="card__title">SEE YOU AGAIN</h3>
+      <p class="card__desc">The first fully circular kids collection — customized and lasered at Denim City Lab</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
@@ -806,21 +494,27 @@
   </div>
 </div>
 
+<!-- Rembrandthuis quote — PULL QUOTE -->
+<div class="pullquote reveal">
+  <p class="pullquote__text">"IN THE SAME ROOMS WHERE REMBRANDT ONCE TAUGHT HIS PUPILS THE SECRETS OF <span class="accent">LIGHT</span>, OUR TALENTS ARE LEARNING THAT A PERFECT STITCH BEGINS WITH A PERFECT <span class="accent">LOOK</span>"</p>
+</div>
+
 <!-- ══ JEAN SCHOOL ══ -->
 <div class="divider reveal">
   <span class="divider__label">Education</span>
   <h2 class="divider__title">JEAN <span class="accent">SCHOOL</span></h2>
 </div>
 
-<div class="wide reveal">
-  <div class="wide__image">
-    <img src="images/25-jean-school.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-    <span class="placeholder" style="display:none">Image → Jean School</span>
+<!-- Jean School — FULL BLEED -->
+<div class="hero-moment reveal">
+  <div class="hero-moment__bg">
+    <img src="images/25-jean-school.jpg" alt="Jean School" style="animation-name:kenburns3">
   </div>
-  <div class="wide__text">
-    <span class="wide__label">Education</span>
-    <h2 class="wide__title">JEAN SCHOOL UPDATE</h2>
-    <p class="wide__desc">The latest from our education program</p>
+  <div class="hero-moment__overlay"></div>
+  <div class="hero-moment__content">
+    <span class="hero-moment__label">Education</span>
+    <h2 class="hero-moment__title">JEAN SCHOOL UPDATE</h2>
+    <p class="hero-moment__desc">The latest from our education program</p>
   </div>
 </div>
 
@@ -844,7 +538,7 @@
     <div class="card__text">
       <span class="card__label">Education</span>
       <h3 class="card__title">E-DESIGNER IN CURRICULUM</h3>
-      <p class="card__desc">Digital design tools in Jean School</p>
+      <p class="card__desc">Digital design tools implemented in Jean School</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-3">
@@ -855,7 +549,7 @@
     <div class="card__text">
       <span class="card__label">Talks</span>
       <h3 class="card__title">FRIDAY TALKS</h3>
-      <p class="card__desc">AICHE, Tony Tonnaer, Kevin Koen en Max (over Japan stage)</p>
+      <p class="card__desc">AICHE, Tony Tonnaer, Kevin Koen, Max (about Japan), BENZAK</p>
     </div>
   </div>
 </div>
@@ -882,11 +576,11 @@
   <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/30-sao-paulo.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → S&atilde;o Paulo</span>
+      <span class="placeholder" style="display:none">Image → São Paulo</span>
     </div>
     <div class="card__text">
       <span class="card__label">Global</span>
-      <h3 class="card__title">DENIM CITY S&Atilde;O PAULO</h3>
+      <h3 class="card__title">DENIM CITY SÃO PAULO</h3>
       <p class="card__desc">Jos — Make your own Jeans</p>
     </div>
   </div>
@@ -898,7 +592,6 @@
     <div class="card__text">
       <span class="card__label">Global</span>
       <h3 class="card__title">DENIM CITY IST — NEXT STEPS</h3>
-      <p class="card__desc">What's next for Denim City Turkey</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-3">
@@ -909,12 +602,11 @@
     <div class="card__text">
       <span class="card__label">Global</span>
       <h3 class="card__title">DENIM CITY JBURG</h3>
-      <p class="card__desc">Expanding to South Africa</p>
     </div>
   </div>
 </div>
 
-<!-- ── AIcademy ── -->
+<!-- AIcademy -->
 <div class="wide reveal">
   <div class="wide__image">
     <img src="images/33-aicademy.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
@@ -933,30 +625,46 @@
   <h2 class="divider__title">IN THE <span class="accent">PRESS</span></h2>
 </div>
 
-<div class="grid reveal">
+<div class="grid--three grid reveal">
   <div class="card reveal reveal-delay-1">
     <div class="card__image">
       <img src="images/34-wouter-munnichs.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → Artikel Wouter Munnichs</span>
+      <span class="placeholder" style="display:none">Image → Elle artikel Flo</span>
     </div>
     <div class="card__text">
       <span class="card__label">Press</span>
-      <h3 class="card__title">ARTIKEL WOUTER MUNNICHS</h3>
+      <h3 class="card__title">ELLE MAGAZINE</h3>
+      <p class="card__desc">Artikel Flo</p>
     </div>
   </div>
   <div class="card reveal reveal-delay-2">
     <div class="card__image">
       <img src="images/35-elle-magazine.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → Elle Magazine</span>
+      <span class="placeholder" style="display:none">Image → Elle Spijkershop Safari</span>
     </div>
     <div class="card__text">
       <span class="card__label">Press</span>
-      <h3 class="card__title">ELLE MAGAZINE</h3>
+      <h3 class="card__title">ELLE SPIJKERSHOP SAFARI</h3>
+    </div>
+  </div>
+  <div class="card reveal reveal-delay-3">
+    <div class="card__image">
+      <img src="images/13-volkskrant.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <span class="placeholder" style="display:none">Image → Volkskrant</span>
+    </div>
+    <div class="card__text">
+      <span class="card__label">Press</span>
+      <h3 class="card__title">VOLKSKRANT MAGAZINE</h3>
     </div>
   </div>
 </div>
 
-<!-- ── Footer ── -->
+<!-- ── PULL QUOTE ── -->
+<div class="pullquote reveal">
+  <p class="pullquote__text">TOWARDS A <span class="accent">BRIGHTER</span> BLUE</p>
+</div>
+
+<!-- Footer -->
 <footer class="footer reveal">
   <img class="footer__logo" src="images/logo-denimcity.svg" alt="Denim City AMS">
   <div class="footer__meta">Towards a brighter blue</div>
@@ -967,88 +675,94 @@
 </footer>
 
 <script>
-(function() {
+(function(){
+  // ── Cursor trail ──
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; dot.style.left = mx - 4 + 'px'; dot.style.top = my - 4 + 'px'; });
+  function animateRing() { rx += (mx - rx) * 0.15; ry += (my - ry) * 0.15; ring.style.left = rx + 'px'; ring.style.top = ry + 'px'; requestAnimationFrame(animateRing); }
+  animateRing();
+  document.addEventListener('mouseenter', () => { dot.style.opacity = '1'; ring.style.opacity = '1'; });
+  document.addEventListener('mouseleave', () => { dot.style.opacity = '0'; ring.style.opacity = '0'; });
+  document.querySelectorAll('a, button, .card, .wide').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hovering'));
+  });
+
   // ── Scroll reveal ──
   const reveals = document.querySelectorAll('.reveal');
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-    });
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
   reveals.forEach(el => observer.observe(el));
 
   // ── Stat counters ──
   const stats = document.querySelectorAll('.stat[data-target]');
-  const statObserver = new IntersectionObserver((entries) => {
+  const statObs = new IntersectionObserver(entries => {
     entries.forEach(entry => {
       if (entry.isIntersecting && !entry.target.dataset.counted) {
         entry.target.dataset.counted = 'true';
-        const target = parseInt(entry.target.dataset.target);
+        const target = parseFloat(entry.target.dataset.target);
         const suffix = entry.target.dataset.suffix || '';
         let current = 0;
         const step = Math.max(1, Math.floor(target / 30));
         const timer = setInterval(() => {
           current += step;
-          if (current >= target) {
-            current = target;
-            clearInterval(timer);
-          }
+          if (current >= target) { current = target; clearInterval(timer); }
           entry.target.textContent = current + suffix;
         }, 40);
       }
     });
   }, { threshold: 0.5 });
-  stats.forEach(el => statObserver.observe(el));
+  stats.forEach(el => statObs.observe(el));
+
+  // ── Transcript typewriter ──
+  document.querySelectorAll('.transcript[data-text]').forEach(el => {
+    new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !entry.target.dataset.typed) {
+          entry.target.dataset.typed = 'true';
+          const text = entry.target.dataset.text;
+          entry.target.classList.add('typing');
+          const cursor = document.createElement('span');
+          cursor.className = 'cursor';
+          entry.target.appendChild(cursor);
+          let i = 0;
+          const type = () => { if (i < text.length) { entry.target.insertBefore(document.createTextNode(text[i]), cursor); i++; setTimeout(type, 30 + Math.random() * 30); } else { setTimeout(() => cursor.remove(), 2000); } };
+          setTimeout(type, 500);
+        }
+      });
+    }, { threshold: 0.5 }).observe(el);
+  });
 
   // ── Progress bar ──
   const progress = document.getElementById('progress');
   window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const total = document.body.scrollHeight - window.innerHeight;
-    progress.style.width = (scrolled / total * 100) + '%';
+    progress.style.width = (window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100) + '%';
   }, { passive: true });
 
-  // ── Transcript typewriter ──
-  const transcripts = document.querySelectorAll('.transcript[data-text]');
-  const transcriptObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting && !entry.target.dataset.typed) {
-        entry.target.dataset.typed = 'true';
-        const text = entry.target.dataset.text;
-        entry.target.classList.add('typing');
-        const cursor = document.createElement('span');
-        cursor.className = 'cursor';
-        entry.target.appendChild(cursor);
-        let i = 0;
-        const type = () => {
-          if (i < text.length) {
-            entry.target.insertBefore(document.createTextNode(text[i]), cursor);
-            i++;
-            setTimeout(type, 30 + Math.random() * 30);
-          } else {
-            setTimeout(() => cursor.remove(), 2000);
-          }
-        };
-        setTimeout(type, 500);
-      }
-    });
-  }, { threshold: 0.5 });
-  transcripts.forEach(el => transcriptObserver.observe(el));
-
-  // ── Nav hide on scroll down, show on scroll up ──
+  // ── Nav auto-hide ──
   let lastScroll = 0;
   const nav = document.getElementById('nav');
   window.addEventListener('scroll', () => {
     const current = window.scrollY;
-    if (current > lastScroll && current > 200) {
-      nav.classList.add('hidden');
-    } else {
-      nav.classList.remove('hidden');
-    }
+    nav.classList.toggle('hidden', current > lastScroll && current > 200);
     lastScroll = current;
   }, { passive: true });
+
+  // ── Carousel (for Denham 2 images) ──
+  document.querySelectorAll('.carousel').forEach(carousel => {
+    const imgs = carousel.querySelectorAll('img');
+    if (imgs.length < 2) return;
+    let idx = 0;
+    setInterval(() => {
+      imgs[idx].classList.remove('active');
+      idx = (idx + 1) % imgs.length;
+      imgs[idx].classList.add('active');
+    }, 4000);
+  });
+
 })();
 </script>
 <script>window.SS_ANNOTATIONS = { project: 'presentation-mariette' };</script>
