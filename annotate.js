@@ -571,12 +571,19 @@
         document.getElementById('ss-export').addEventListener('click', exportAnnotations);
 
         // Overlay click (create annotation)
+        let pendingBlock = 'general';
         overlay.addEventListener('click', (e) => {
             document.querySelectorAll('.ss-bubble').forEach(b => b.classList.remove('visible'));
             pendingClick = {
                 x: e.clientX + window.scrollX,
                 y: e.clientY + window.scrollY
             };
+            // Detect block NOW, before form appears on top
+            // Temporarily hide overlay to see what's underneath
+            overlay.style.pointerEvents = 'none';
+            const underEl = document.elementFromPoint(e.clientX, e.clientY);
+            overlay.style.pointerEvents = '';
+            pendingBlock = detectBlock(underEl || document.body);
             const formEl = document.getElementById('ss-form');
             formEl.style.display = 'block';
             formEl.style.left = Math.min(e.clientX, window.innerWidth - 300) + 'px';
@@ -594,12 +601,7 @@
             userName = name;
             localStorage.setItem('ss-annotation-name', userName);
 
-            const block = detectBlock(
-                document.elementFromPoint(
-                    pendingClick.x - window.scrollX,
-                    pendingClick.y - window.scrollY
-                ) || document.body
-            );
+            const block = pendingBlock;
 
             await storage.save({
                 project: PROJECT,
