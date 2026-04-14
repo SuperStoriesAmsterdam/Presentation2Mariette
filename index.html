@@ -137,6 +137,8 @@
   .pullquote { padding: var(--sp-7) var(--sp-6); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: center; min-height: 50vh; }
   .pullquote__text { font-family: var(--font-display); font-weight: 700; font-size: clamp(28px,4vw,56px); line-height: 1.05; text-transform: uppercase; text-align: center; max-width: 900px; }
   .pullquote__text .accent { color: var(--accent); }
+  .rolling-text { opacity: 0; transform: translateY(100px); transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1); }
+  .rolling-text.visible { opacity: 1; transform: translateY(0); }
 
   /* ── Footer ── */
   .footer { padding: var(--sp-7) var(--sp-6); border-top: 1px solid var(--border); text-align: center; min-height: 60vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-5); }
@@ -197,16 +199,19 @@
       <p class="transcript" data-text="It seems like yesterday that we organized the first denim breakfast at the house of the mayor of Amsterdam. Today it's the 25th edition. And you are so welcome!"></p>
     </div>
   </div>
-  <div class="card">
-    <div class="card__image">
-      <img src="images/03-adriano-goldschmied.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → Adriano Goldschmied</span>
-    </div>
-    <div class="card__text">
-      <span class="card__label">Tribute</span>
-      <h3 class="card__title">ADRIANO GOLDSCHMIED</h3>
-      <p class="card__desc">A tribute to the godfather of denim</p>
-    </div>
+  </div>
+</div>
+
+<!-- Adriano — FULL BLEED HERO -->
+<div class="hero-moment reveal" data-block="03-adriano-goldschmied">
+  <div class="hero-moment__bg">
+    <img src="images/03-adriano-goldschmied.jpg" alt="Adriano Goldschmied" style="object-position: center 15%; animation-name: kenburns2">
+  </div>
+  <div class="hero-moment__overlay"></div>
+  <div class="hero-moment__content reveal">
+    <span class="hero-moment__label">Tribute</span>
+    <h2 class="hero-moment__title">ADRIANO <span class="accent">GOLDSCHMIED</span></h2>
+    <p class="hero-moment__desc">A tribute to the godfather of denim</p>
   </div>
 </div>
 
@@ -414,7 +419,7 @@
   <div class="hero-moment__overlay"></div>
   <div class="hero-moment__content reveal">
     <span class="hero-moment__label">Collaboration</span>
-    <h2 class="hero-moment__title">DENHAM x <span class="accent">WINTER OLYMPICS</span></h2>
+    <h2 class="hero-moment__title">DENHAM x WINTER OLYMPICS</h2>
     <p class="hero-moment__desc">When talent meets legends. We are super proud to be part of the collaboration with Denham and Team NL for the Olympic winter games — and we nailed it.</p>
   </div>
 </div>
@@ -424,12 +429,12 @@
   <div class="hero-moment__bg">
     <img src="images/19-davido.jpg" alt="Davido" style="animation-name:kenburns2">
   </div>
-  <div class="hero-moment__overlay"></div>
+  <div class="hero-moment__overlay" style="background:linear-gradient(to top, rgba(0,0,80,0.85) 0%, rgba(0,0,80,0.3) 50%, rgba(0,0,80,0.5) 100%)"></div>
   <div class="hero-moment__content reveal">
-    <span class="hero-moment__label">Culture</span>
+    <span class="hero-moment__label" style="color:rgba(255,255,255,0.6)">Culture</span>
     <h2 class="hero-moment__title">DAVIDO</h2>
-    <p class="hero-moment__desc">Custom made TNO denim for artist Davido designed by Bram Romkes, Jean School graduate, lasered with a "northern light wash" by our washmaster Bowie.</p>
-    <p style="font-family:var(--font-mono);font-size:var(--type-label);text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.5);margin-top:var(--sp-2)"><span class="stat" data-target="31" data-suffix=".5" style="font-size:clamp(36px,5vw,64px);color:var(--white)">0</span><span class="stat__unit" style="color:rgba(255,255,255,0.5)">million followers</span></p>
+    <p style="font-family:var(--font-mono);font-size:var(--type-label);text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.6);margin-bottom:var(--sp-3)"><span class="stat" data-target="31" data-suffix=".5" style="font-size:clamp(36px,5vw,64px);color:var(--white)">0</span><span class="stat__unit" style="color:rgba(255,255,255,0.6)">million followers</span></p>
+    <p class="transcript" data-text="Custom made TNO denim for artist Davido designed by Bram Romkes, Jean School graduate and lasered with a 'northern light wash' by our washmaster Bowie. Davido (David Adedeji Adeleke) is a Nigerian-American singer, songwriter, and producer, who is widely regarded as one of Africa's most successful and influential Afrobeats artists." style="color:var(--white);border-left-color:var(--white);font-size:16px"></p>
   </div>
 </div>
 
@@ -481,22 +486,21 @@
       <p class="card__desc">The first fully circular kids collection — customized and lasered at Denim City Lab</p>
     </div>
   </div>
-  <div class="card reveal reveal-delay-2">
-    <div class="card__image">
-      <img src="images/24-rembrandthuis.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → Rembrandthuis</span>
-    </div>
-    <div class="card__text">
-      <span class="card__label">Culture</span>
-      <h3 class="card__title">REMBRANDTHUIS x PIET PARIS & SJOUKJE BIERMA</h3>
-      <p class="card__desc">"Good Looking"</p>
-    </div>
   </div>
 </div>
 
-<!-- Rembrandthuis quote — PULL QUOTE -->
-<div class="pullquote reveal" data-block="24-rembrandthuis-quote">
-  <p class="pullquote__text">"IN THE SAME ROOMS WHERE REMBRANDT ONCE TAUGHT HIS PUPILS THE SECRETS OF <span class="accent">LIGHT</span>, OUR TALENTS ARE LEARNING THAT A PERFECT STITCH BEGINS WITH A PERFECT <span class="accent">LOOK</span>"</p>
+<!-- Rembrandthuis — FULL BLEED HERO -->
+<div class="hero-moment reveal" data-block="24-rembrandthuis">
+  <div class="hero-moment__bg">
+    <img src="images/24-rembrandthuis.jpg" alt="Rembrandthuis" style="animation-name: kenburns3">
+  </div>
+  <div class="hero-moment__overlay"></div>
+  <div class="hero-moment__content reveal">
+    <span class="hero-moment__label">Culture</span>
+    <h2 class="hero-moment__title">REMBRANDTHUIS x PIET PARIS & <span class="accent">SJOUKJE BIERMA</span></h2>
+    <p class="hero-moment__desc">"Good Looking"</p>
+    <p class="hero-moment__quote">In the same rooms where Rembrandt once taught his pupils the secrets of light, our House of Denim talents are learning that a perfect stitch begins with a perfect look. Before the needle meets the denim, the eye must meet the form.</p>
+  </div>
 </div>
 
 <!-- ══ JEAN SCHOOL ══ -->
@@ -562,7 +566,7 @@
   <div class="wide__text">
     <span class="wide__label">Education</span>
     <h2 class="wide__title">INTERNSHIPS</h2>
-    <p class="wide__desc">Need your help — connecting students with industry placements</p>
+    <p class="wide__desc" style="font-size:var(--type-intro);font-weight:700">Need your help — connecting students with industry placements</p>
   </div>
 </div>
 
@@ -660,8 +664,8 @@
 </div>
 
 <!-- ── PULL QUOTE ── -->
-<div class="pullquote reveal" data-block="99-brighter-blue">
-  <p class="pullquote__text">TOWARDS A <span class="accent">BRIGHTER</span> BLUE</p>
+<div class="pullquote reveal" data-block="99-brighter-blue" style="min-height:70vh;overflow:hidden;">
+  <p class="pullquote__text rolling-text" style="font-size:clamp(48px,8vw,120px);line-height:0.95;">TOWARDS A <span class="accent">BRIGHTER</span> BLUE</p>
 </div>
 
 <!-- Footer -->
@@ -691,7 +695,7 @@
   });
 
   // ── Scroll reveal ──
-  const reveals = document.querySelectorAll('.reveal');
+  const reveals = document.querySelectorAll('.reveal, .rolling-text');
   const observer = new IntersectionObserver(entries => {
     entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
   }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
