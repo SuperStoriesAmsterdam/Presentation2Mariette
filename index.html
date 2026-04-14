@@ -84,8 +84,8 @@
   .card:nth-child(2n) { border-right: none; }
   .grid--three .card:nth-child(2n) { border-right: 1px solid var(--border); }
   .grid--three .card:nth-child(3n) { border-right: none; }
-  .card__image { width: 100%; aspect-ratio: 16/10; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); position: relative; }
-  .card__image img { width: 100%; height: 100%; object-fit: cover; display: block; animation: kenburns 20s ease-in-out infinite alternate; }
+  .card__image { width: 100%; overflow: hidden; background: var(--surface); display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); position: relative; }
+  .card__image img { width: 100%; height: auto; display: block; animation: kenburns 20s ease-in-out infinite alternate; }
   .card:nth-child(2n) .card__image img { animation-name: kenburns2; }
   .card:nth-child(3n) .card__image img { animation-name: kenburns3; }
   .card:hover .card__image img { animation-play-state: paused; transform: scale(1.05); transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
@@ -106,8 +106,8 @@
 
   /* ── Wide card ── */
   .wide { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border); }
-  .wide__image { aspect-ratio: 16/9; overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
-  .wide__image img { width: 100%; height: 100%; object-fit: cover; animation: kenburns 20s ease-in-out infinite alternate; }
+  .wide__image { overflow: hidden; background: var(--surface); border-right: 1px solid var(--border); display: flex; align-items: center; justify-content: center; }
+  .wide__image img { width: 100%; height: auto; display: block; animation: kenburns 20s ease-in-out infinite alternate; }
   .wide:hover .wide__image img { animation-play-state: paused; }
   .wide__image .placeholder { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
   .wide__text { padding: var(--sp-6) var(--sp-5); display: flex; flex-direction: column; justify-content: center; gap: var(--sp-2); }
@@ -200,18 +200,15 @@
     </div>
   </div>
   </div>
-</div>
-
-<!-- Adriano — FULL BLEED HERO -->
-<div class="hero-moment reveal" data-block="03-adriano-goldschmied">
-  <div class="hero-moment__bg">
-    <img src="images/03-adriano-goldschmied.jpg" alt="Adriano Goldschmied" style="object-position: center 15%; animation-name: kenburns2">
-  </div>
-  <div class="hero-moment__overlay"></div>
-  <div class="hero-moment__content reveal">
-    <span class="hero-moment__label">Tribute</span>
-    <h2 class="hero-moment__title">ADRIANO <span class="accent">GOLDSCHMIED</span></h2>
-    <p class="hero-moment__desc">A tribute to the godfather of denim</p>
+  <div class="card" data-block="03-adriano-goldschmied">
+    <div class="card__image" style="aspect-ratio:auto">
+      <img src="images/03-adriano-goldschmied.jpg" style="object-fit:contain;animation:none">
+    </div>
+    <div class="card__text">
+      <span class="card__label">Tribute</span>
+      <h3 class="card__title">ADRIANO GOLDSCHMIED</h3>
+      <p class="card__desc">A tribute to the godfather of denim</p>
+    </div>
   </div>
 </div>
 
@@ -474,18 +471,15 @@
   </div>
 </div>
 
-<div class="grid reveal" data-block="23-seeyouagain-rembrandthuis">
-  <div class="card reveal reveal-delay-1">
-    <div class="card__image">
-      <img src="images/23-see-you-again.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <span class="placeholder" style="display:none">Image → See You Again</span>
-    </div>
-    <div class="card__text">
-      <span class="card__label">Exhibition</span>
-      <h3 class="card__title">SEE YOU AGAIN</h3>
-      <p class="card__desc">The first fully circular kids collection — customized and lasered at Denim City Lab</p>
-    </div>
+<div class="wide reveal" data-block="23-see-you-again">
+  <div class="wide__image">
+    <img src="images/23-see-you-again.jpg" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="placeholder" style="display:none">Image → See You Again</span>
   </div>
+  <div class="wide__text">
+    <span class="wide__label">Exhibition</span>
+    <h2 class="wide__title">SEE YOU AGAIN</h2>
+    <p class="wide__desc">The first fully circular kids collection — customized and lasered at Denim City Lab</p>
   </div>
 </div>
 
@@ -497,10 +491,14 @@
   <div class="hero-moment__overlay"></div>
   <div class="hero-moment__content reveal">
     <span class="hero-moment__label">Culture</span>
-    <h2 class="hero-moment__title">REMBRANDTHUIS x PIET PARIS & <span class="accent">SJOUKJE BIERMA</span></h2>
+    <h2 class="hero-moment__title">REMBRANDTHUIS x PIET PARIS & SJOUKJE BIERMA</h2>
     <p class="hero-moment__desc">"Good Looking"</p>
-    <p class="hero-moment__quote">In the same rooms where Rembrandt once taught his pupils the secrets of light, our House of Denim talents are learning that a perfect stitch begins with a perfect look. Before the needle meets the denim, the eye must meet the form.</p>
   </div>
+</div>
+
+<!-- Rembrandthuis quote — rolling, lowercase -->
+<div style="padding:var(--sp-7) var(--sp-6);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;min-height:40vh;" data-block="24-rembrandthuis-quote">
+  <p class="transcript" data-text="In the same rooms where Rembrandt once taught his pupils the secrets of light, our House of Denim talents are learning that a perfect stitch begins with a perfect look. Before the needle meets the denim, the eye must meet the form." style="font-size:clamp(20px,3vw,32px);font-style:italic;max-width:800px;text-align:center;border-left:none;padding-left:0;line-height:1.4"></p>
 </div>
 
 <!-- ══ JEAN SCHOOL ══ -->
