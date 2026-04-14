@@ -578,11 +578,16 @@
                 x: e.clientX + window.scrollX,
                 y: e.clientY + window.scrollY
             };
-            // Detect block NOW, before form appears on top
-            // Temporarily hide overlay to see what's underneath
-            overlay.style.pointerEvents = 'none';
-            const underEl = document.elementFromPoint(e.clientX, e.clientY);
-            overlay.style.pointerEvents = '';
+            // Detect block NOW — use elementsFromPoint to look through the overlay
+            const allEls = document.elementsFromPoint(e.clientX, e.clientY);
+            const underEl = allEls.find(el => {
+                // Skip annotation UI elements
+                if (el.id && el.id.startsWith('ss-')) return false;
+                if (el.closest && el.closest('#ss-overlay, #ss-form, #ss-toolbar, #ss-mode-bar, #ss-panel')) return false;
+                // Skip cursor elements
+                if (el.id === 'cursorDot' || el.id === 'cursorRing' || el.id === 'progress') return false;
+                return true;
+            });
             pendingBlock = detectBlock(underEl || document.body);
             const formEl = document.getElementById('ss-form');
             formEl.style.display = 'block';
