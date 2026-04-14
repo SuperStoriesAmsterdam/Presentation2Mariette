@@ -758,7 +758,8 @@
             if (confirm('Clear all annotations? You will start fresh.')) {
                 annotations = [];
                 localStorage.removeItem(STORAGE_KEY);
-                renderPins();
+                // Force remove all pins and bubbles from DOM
+                document.querySelectorAll('.ss-pin, .ss-bubble').forEach(el => el.remove());
                 updateCount();
                 panelOpen = false;
                 panel.remove();
