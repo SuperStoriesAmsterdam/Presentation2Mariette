@@ -750,8 +750,9 @@
         document.getElementById('ss-panel-clear').addEventListener('click', () => {
             if (confirm('Clear all annotations? You will start fresh.')) {
                 annotations = [];
-                storage._saveLocal();
-                renderDots();
+                localStorage.removeItem(STORAGE_KEY);
+                renderPins();
+                updateCount();
                 panelOpen = false;
                 panel.remove();
             }
