@@ -23,8 +23,9 @@
     --type-body: 16px; --type-small: 14px; --type-label: 11px;
   }
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
   body { background: var(--bg); color: var(--primary); font-family: var(--font-body); font-size: var(--type-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
+  .hero, .wide, .grid, .divider, .hero-moment, .pullquote, .webflow-embed, .footer { scroll-snap-align: start; }
   a, button { cursor: none; }
 
   /* ── Cursor trail ── */
@@ -123,9 +124,8 @@
   /* ── Webflow embed ── */
   .webflow-embed { border-bottom: 1px solid var(--border); }
   .webflow-embed__header { padding: var(--sp-4) var(--sp-6); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
-  .webflow-embed__viewport { overflow: hidden; height: 80vh; }
-  .webflow-embed__viewport img { width: 100%; display: block; animation: scrollsite 30s linear infinite; }
-  @keyframes scrollsite { 0% { transform: translateY(0); } 90% { transform: translateY(-80%); } 95% { transform: translateY(-80%); } 100% { transform: translateY(0); } }
+  .webflow-embed__viewport { overflow-y: auto; height: 80vh; -webkit-overflow-scrolling: touch; }
+  .webflow-embed__viewport img { width: 100%; display: block; }
 
   /* ── Transcript ── */
   .transcript { font-family: var(--font-body); font-size: var(--type-small); font-style: italic; line-height: 1.6; color: var(--primary); margin-top: var(--sp-2); min-height: 1.6em; border-left: 2px solid var(--accent); padding-left: var(--sp-2); opacity: 0; transition: opacity 0.3s; }
