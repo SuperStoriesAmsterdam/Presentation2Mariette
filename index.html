@@ -23,9 +23,12 @@
     --type-body: 16px; --type-small: 14px; --type-label: 11px;
   }
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
+  html { scroll-behavior: smooth; scroll-snap-type: y mandatory; overflow-x: hidden; }
   body { background: var(--bg); color: var(--primary); font-family: var(--font-body); font-size: var(--type-body); -webkit-font-smoothing: antialiased; overflow-x: hidden; cursor: none; }
-  .hero, .wide, .grid, .divider, .hero-moment, .pullquote, .webflow-embed, .footer { scroll-snap-align: start; }
+  .hero, .wide, .grid, .divider, .hero-moment, .pullquote, .webflow-embed, .footer { scroll-snap-align: start; min-height: 100vh; overflow: hidden; }
+  .grid, .wide { align-content: center; }
+  .pullquote { display: flex; align-items: center; justify-content: center; }
+  .divider { display: flex; flex-direction: column; justify-content: center; }
   a, button { cursor: none; }
 
   /* ── Cursor trail ── */
